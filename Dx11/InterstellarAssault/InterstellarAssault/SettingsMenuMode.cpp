@@ -75,7 +75,7 @@ SettingsMenuMode::SettingsMenuMode()
 	counterText.CentreOriginY();
 
 	// Initialize the game volume counter.
-	UICounter gameVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetMasterVolume() * 100.0f), 0, 10, [&]() {
+	UICounter gameVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetMasterVolume() * 10.0f), 0, 10, [&]() {
 		aM.AdjustMasterVolume(mCurrentGameVolume);
 		});
 
@@ -110,9 +110,9 @@ void SettingsMenuMode::Update(float dTime)
 	Game& gm = Game::Get();
 
 	// Update the game volume based on the counter value.
-	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 100.0f;
+	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 10.0f;
 	mUIMgr.HandleInput();
-	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 100.0f;
+	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 10.0f;
 }
 
 // Render function: Draws the settings menu elements.

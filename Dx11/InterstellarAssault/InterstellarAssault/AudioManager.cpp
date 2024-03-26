@@ -21,10 +21,6 @@ AudioManager::AudioManager()
 	mSoundEffects[HIT] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/hit.wav");
 	mSoundEffects[ENTER] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/enter.wav");
 	mSoundEffects[SELECT] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/select.wav");
-
-#if defined(DEBUG) || defined(_DEBUG)
-	mAudEngine->SetMasterVolume(0.1f);  // Set lower master volume in debug mode.
-#endif
 }
 
 // AudioManager Destructor: Handles the cleanup of audio engine and sound effects.
