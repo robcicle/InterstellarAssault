@@ -110,9 +110,14 @@ void SettingsMenuMode::Update(float dTime)
 	Game& gm = Game::Get();
 
 	// Update the game volume based on the counter value.
-	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 10.0f;
 	mUIMgr.HandleInput();
 	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 10.0f;
+
+	// Extra check just to make sure volume is actually updated.
+	if (mCurrentGameVolume != Game::Get().GetAudMgr().GetMasterVolume())
+	{
+		Game::Get().GetAudMgr().AdjustMasterVolume(mCurrentGameVolume);
+	}
 }
 
 // Render function: Draws the settings menu elements.

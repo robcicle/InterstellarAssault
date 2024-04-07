@@ -51,7 +51,7 @@ Game::Game() : mpSB(nullptr), mpFont(nullptr)
 	mMMgr.AddMode(new GameOverMode());
 
     // Make sure our mode manager goes to the correct one
-	mMMgr.SwitchMode(IntroMode::MODE_NAME);
+	mMMgr.SwitchMode(MainMenuMode::MODE_NAME);
 
 	// Begin loading models in a separate thread.
 	mLoadData.mTotalToLoad = Modelid::TOTAL;
@@ -324,7 +324,7 @@ void Game::DebugData::UpdateDebug(float dTime)
 }
 
 // RenderDebug function: Renders debug information through text.
-void Game::DebugData::RenderDebug(float dTime, SpriteBatch& batch)
+void Game::DebugData::RenderDebug(float dTime, SpriteBatch& batch) const
 {
     mFpsText->Draw(batch);
 }

@@ -68,7 +68,7 @@ public:
 	{
 		DebugData(MyD3D& d3d);
 		void UpdateDebug(float dTime);  // UpdateDebug: Update any debug logic, e.g. DrawCollisions toggle boolean with L Key
-		void RenderDebug(float dTime, DirectX::SpriteBatch& batch);  // RenderDebug: Overlays debug information.
+		void RenderDebug(float dTime, DirectX::SpriteBatch& batch) const;  // RenderDebug: Overlays debug information.
 
 		bool mDebugDrawColliders = false;
 		Text* mFpsText = nullptr;
