@@ -123,6 +123,7 @@
     <ClCompile Include="GeometryBuilder.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="IntroMode.cpp" />
+    <ClCompile Include="LuaHelper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuMode.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="GameObj.h" />
     <ClInclude Include="GameOverMode.h" />
     <ClInclude Include="GeometryBuilder.h" />
+    <ClInclude Include="LuaHelper.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="IntroMode.h" />
     <ClInclude Include="MainMenuMode.h" />
@@ -230,6 +232,9 @@
     <ProjectReference Include="..\..\DirectXTK\DirectXTK_Desktop_2022.vcxproj">
       <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Script.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

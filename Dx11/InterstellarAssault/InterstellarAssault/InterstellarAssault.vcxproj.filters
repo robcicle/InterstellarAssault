@@ -49,6 +49,12 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{16cb5caf-b473-492b-856f-1e315ee0740f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Lua">
+      <UniqueIdentifier>{7ed4ddb0-257c-4ce6-80d6-7025ea39e04c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua Scripts">
+      <UniqueIdentifier>{20e1462c-8995-40e5-884a-2356dbe8c5f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WindowUtils.cpp">
@@ -146,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="TutorialMenuMode.cpp">
       <Filter>Game\Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaHelper.cpp">
+      <Filter>Game\Lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +260,9 @@
     <ClInclude Include="TutorialMenuMode.h">
       <Filter>Game\Modes</Filter>
     </ClInclude>
+    <ClInclude Include="LuaHelper.h">
+      <Filter>Game\Lua</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\FX\TextureVS.hlsl">
@@ -277,5 +289,10 @@
     <FxCompile Include="..\FX\PSLitTex.hlsl">
       <Filter>FX</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Script.lua">
+      <Filter>Lua Scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

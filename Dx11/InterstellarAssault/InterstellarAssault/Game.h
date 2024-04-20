@@ -15,6 +15,7 @@
 #include "Model.h"
 #include "constants.h"
 #include "Text.h"
+#include "LuaHelper.h"
 
 
 // Game class: Represents the main game, handling inputs, modes, rendering, and updates.
@@ -48,6 +49,7 @@ public:
 	AudioManager& GetAudMgr() { return mAudMgr; }
 	ScoreSystem& GetScoreSys() { return mScoreSys; }
 	DirectX::SpriteFont* GetFont() { return mpFont; }
+	lua_State* GetLuaState() { return mpLuaState; }
 
 	// ChangeBackgroundColour: Update the background color of the game.
 	void ChangeBackgroundColour(DirectX::SimpleMath::Vector4 colour) {
@@ -121,4 +123,6 @@ private:
 
 	AudioManager mAudMgr;   // Manages audio for the game.
 	ScoreSystem mScoreSys;  // Manages the scoring system.
+
+	lua_State* mpLuaState = nullptr;
 };
