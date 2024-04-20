@@ -31,8 +31,7 @@ void Player::Init()
 	mPlayArea.top = mSpr.GetScreenSize().y * 0.6f;
 	mPlayArea.right = w - mPlayArea.left;
 	mPlayArea.bottom = h * 0.9f;
-//	mSpr.mPos = Vector2((mPlayArea.left + mPlayArea.right) / 2.0f, mPlayArea.bottom);
-	mSpr.mPos = LuaGetVec2(Game::Get().GetLuaState(), "startPos");
+	mSpr.mPos = Vector2((mPlayArea.left + mPlayArea.right) / 2.0f, mPlayArea.bottom);
 
 	// Set the initial fire timer for missile shooting
 	mFireTimer = GetClock() + GC::FIRE_DELAY;
