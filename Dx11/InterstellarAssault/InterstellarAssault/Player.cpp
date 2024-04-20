@@ -18,7 +18,7 @@ void Player::Init()
 {
 	MyD3D& d3d = WinUtil::Get().GetD3D();
 	// Load and orient the ship sprite
-	ID3D11ShaderResourceView* p = d3d.GetTexCache().LoadTexture(&d3d.GetDevice(), "sprites/ship.dds");
+	ID3D11ShaderResourceView* p = d3d.GetTexCache().LoadTexture(&d3d.GetDevice(), LuaGetStr(Game::Get().GetLuaState(), "playerSprite"));
 	mSpr.SetTex(*p);
 	mSpr.SetScale(Vector2(0.1f, 0.1f));
 	mSpr.origin = mSpr.GetTexData().dim / 2.0f;
