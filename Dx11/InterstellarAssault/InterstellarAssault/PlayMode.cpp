@@ -455,8 +455,48 @@ void PlayMode::EnterScoreData::ProcessKey(char key)
 		return;
 	}
 
-	// Validate character limits and allowed characters for the name.
-	// [Validation logic remains unchanged]
+	// Validation for character limits and allowed characters.
+
+	// Check it doesn't exceed the 8 character limit
+	if (mNameString.size() >= 8)
+	{
+		mFormatWarnText->mString = "CANNOT EXCEED 8 CHARACTERS";
+		mFormatWarnText->CentreOriginX();
+		mFormatWarnText->colour = Colors::Red;
+		mFormatWarnText->mActive = true;
+		return;
+	}
+
+	// Check that this character is alphabetical
+	std::string newNameString = mNameString + key;
+
+	for (size_t i = 0; i < newNameString.size(); i++)
+	{
+		// make sure each character is A-Z or a space
+		if (!std::isalpha(newNameString[i]) && !std::isspace(newNameString[i]))
+		{
+			mFormatWarnText->mString = "ALPHABETICAL CHARACTERS ONLY";
+			mFormatWarnText->CentreOriginX();
+			mFormatWarnText->colour = Colors::Red;
+			mFormatWarnText->mActive = true;
+			return; // This one didn't match so return
+		}
+	}
+
+	// If all else passes then it continues
+	mNameString = newNameString;
+	std::transform(mNameString.begin(), mNameString.end(), mNameString.begin(), ::toupper);
+	DBOUT(mNameString);
+	mNameText->mString = mNameString;
+	mNameText->CentreOriginX();
+
+	if (mNameString.size() > 0)
+	{
+		mFormatWarnText->mString = "PRESS ENTER OR A (CONTROLLER) TO CONTINUE";
+		mFormatWarnText->CentreOriginX();
+		mFormatWarnText->colour = Colors::White;
+		mFormatWarnText->mActive = true;
+	}
 }
 
 // Finish function: Finalizes the score entry process.
