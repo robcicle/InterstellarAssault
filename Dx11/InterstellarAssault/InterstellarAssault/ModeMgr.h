@@ -62,9 +62,13 @@ public:
     // Release method: Frees all the mode instances. Can be called explicitly or left to the destructor.
     void Release();
 
+    std::string GetCurrentModeStr() { return currentMode; }
+
 private:
     std::vector<AMode*> mModes;  // Container of all game modes.
     int mCurrentMIdx = -1;       // Index of the currently active mode.
     int mDesiredMIdx = -1;       // Index of the desired active mode.
     int mSwitchCount = 0;        // Counter for mode switches.
+
+    std::string currentMode = "";
 };

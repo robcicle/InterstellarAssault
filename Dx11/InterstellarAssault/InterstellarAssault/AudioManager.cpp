@@ -21,6 +21,10 @@ AudioManager::AudioManager()
 	mSoundEffects[HIT] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/hit.wav");
 	mSoundEffects[ENTER] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/enter.wav");
 	mSoundEffects[SELECT] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/select.wav");
+	
+	// Load music from files into music objects.
+	mMusicList[AUTOMATION_SONG] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/music/automation_song.wav");
+	mMusicList[TRASHY_SONG] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/music/trashy_song.wav");
 }
 
 // AudioManager Destructor: Handles the cleanup of audio engine and sound effects.
@@ -32,8 +36,12 @@ AudioManager::~AudioManager()
 	mAudEngine = nullptr;  // Reset the audio engine pointer.
 
 	// Reset sound effects.
-	for (int i = 0; i < SoundList::TOTAL; i++)
+	for (int i = 0; i < SoundList::STOTAL; i++)
 		mSoundEffects[i] = nullptr;
+
+	// Reset music.
+	for (int i = 0; i < MusicList::MTOTAL; i++)
+		mMusicList[i] = nullptr;
 }
 
 // Update method: Updates the audio engine state.
@@ -49,7 +57,15 @@ SoundEffectInstance* AudioManager::CreateSFXInstance(SoundList soundToPlay, floa
 {
 	// Create a new instance of the specified sound effect.
 	std::unique_ptr<SoundEffectInstance> instance = mSoundEffects[soundToPlay]->CreateInstance();
-	instance->SetVolume(volume / mGameVolume);  // Adjust volume based on game settings.
+	instance->SetVolume(volume * mGameVolume);  // Adjust volume based on game settings.
 	instance->Play();  // Play the sound effect instance.
+	return instance.release();  // Release and return the instance.
+}
+
+SoundEffectInstance* AudioManager::CreateMusicInstance(MusicList songToPlay, float volume)
+{
+	// Create a new instance of the specified song.
+	std::unique_ptr<SoundEffectInstance> instance = mMusicList[songToPlay]->CreateInstance();
+	instance->SetVolume(volume * mMusicVolume);  // Adjust volume based on game settings.
 	return instance.release();  // Release and return the instance.
 }

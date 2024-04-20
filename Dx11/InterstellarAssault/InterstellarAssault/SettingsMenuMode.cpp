@@ -66,7 +66,7 @@ SettingsMenuMode::SettingsMenuMode()
 	downArrowSprite.origin = (downArrowSprite.GetTexData().dim / 2.0f) / 2.0f;
 	downArrowSprite.rotation = PI * 10.0f;
 
-	// Configure and initialize the game volume counter.
+	// Configure and initialize the master volume counter.
 	Text counterText(d3d);
 	counterText.SetFont(*retrotechSF);
 	counterText.mActive = true;
@@ -74,13 +74,51 @@ SettingsMenuMode::SettingsMenuMode()
 	counterText.CentreOriginX();
 	counterText.CentreOriginY();
 
-	// Initialize the game volume counter.
-	UICounter gameVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetMasterVolume() * 10.0f), 0, 10, [&]() {
-		aM.AdjustMasterVolume(mCurrentGameVolume);
+	// Initialize the master volume counter.
+	UICounter masterVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetMasterVolume() * 10.0f), 0, 10, [&]() {
+		AdjustMasterVolume();
 		});
 
 	// Set the position of the counter and add it to the UI manager.
-	gameVolumeCounter.SetPosition(Vector2((float)w / 2.0f, (float)h / 2.0f)); // Example position
+	masterVolumeCounter.SetPosition(Vector2((float)w / 2.0f, (float)h * 0.4f)); 
+	mUIMgr.AddCounter(masterVolumeCounter);
+
+	// Configure and add the text label for the master volume.
+	mMasterVolumeText = new Text(d3d);
+	mMasterVolumeText->SetFont(*retrotechSF);
+	mMasterVolumeText->mActive = true;
+	mMasterVolumeText->mString = "MASTER VOLUME: ";
+	mMasterVolumeText->mPos = Vector2(masterVolumeCounter.GetText().mPos.x - mMasterVolumeText->GetSize().x, masterVolumeCounter.GetText().mPos.y);
+	mMasterVolumeText->scale = 1.0f;
+	mMasterVolumeText->CentreOriginX();
+	mTexts.push_back(mMasterVolumeText);
+
+	// Initialize the music volume counter.
+	UICounter musicVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetMusicVolume() * 10.0f), 0, 10, [&]() {
+		AdjustMusicVolume();
+		});
+
+	// Set the position of the counter and add it to the UI manager.
+	musicVolumeCounter.SetPosition(Vector2((float)w / 2.0f, (float)h * 0.5f)); 
+	mUIMgr.AddCounter(musicVolumeCounter);
+
+	// Configure and add the text label for the music volume.
+	mMusicVolumeText = new Text(d3d);
+	mMusicVolumeText->SetFont(*retrotechSF);
+	mMusicVolumeText->mActive = true;
+	mMusicVolumeText->mString = "MUSIC VOLUME: ";
+	mMusicVolumeText->mPos = Vector2(musicVolumeCounter.GetText().mPos.x - mMusicVolumeText->GetSize().x, musicVolumeCounter.GetText().mPos.y);
+	mMusicVolumeText->scale = 1.0f;
+	mMusicVolumeText->CentreOriginX();
+	mTexts.push_back(mMusicVolumeText);
+
+	// Initialize the game volume counter.
+	UICounter gameVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetGameVolume() * 10.0f), 0, 10, [&]() {
+		AdjustGameVolume();
+		});
+
+	// Set the position of the counter and add it to the UI manager.
+	gameVolumeCounter.SetPosition(Vector2((float)w / 2.0f, (float)h * 0.6f));
 	mUIMgr.AddCounter(gameVolumeCounter);
 
 	// Configure and add the text label for the game volume.
@@ -111,13 +149,7 @@ void SettingsMenuMode::Update(float dTime)
 
 	// Update the game volume based on the counter value.
 	mUIMgr.HandleInput();
-	mCurrentGameVolume = mUIMgr.GetCounterValue(0) / 10.0f;
-
-	// Extra check just to make sure volume is actually updated.
-	if (mCurrentGameVolume != Game::Get().GetAudMgr().GetMasterVolume())
-	{
-		Game::Get().GetAudMgr().AdjustMasterVolume(mCurrentGameVolume);
-	}
+	
 }
 
 // Render function: Draws the settings menu elements.
@@ -135,4 +167,26 @@ void SettingsMenuMode::Render(float dTime, DirectX::SpriteBatch& batch)
 void SettingsMenuMode::Reset()
 {
 	mUIMgr.Reset();
+}
+
+void SettingsMenuMode::AdjustMasterVolume()
+{
+	mCurrentMasterVolume = mUIMgr.GetCounterValue(0) / 10.0f;
+
+	Game::Get().GetAudMgr().AdjustMasterVolume(mCurrentMasterVolume);
+}
+
+void SettingsMenuMode::AdjustMusicVolume()
+{
+	mCurrentMusicVolume = mUIMgr.GetCounterValue(1) / 10.0f;
+
+	Game::Get().GetAudMgr().AdjustMusicVolume(mCurrentMusicVolume);
+	Game::Get().UpdateMusicVolume(mCurrentMusicVolume);
+}
+
+void SettingsMenuMode::AdjustGameVolume()
+{
+	mCurrentGameVolume = mUIMgr.GetCounterValue(2) / 10.0f;
+
+	Game::Get().GetAudMgr().AdjustGameVolume(mCurrentGameVolume);
 }

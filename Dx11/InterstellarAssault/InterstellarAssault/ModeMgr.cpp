@@ -1,4 +1,5 @@
 #include "ModeMgr.h"
+#include "PlayMode.h"
 
 
 // SwitchMode: Switches to a new game mode based on the provided mode name.
@@ -12,6 +13,8 @@ void ModeMgr::SwitchMode(const std::string& newMode) {
     assert(idx < (int)mModes.size()); // Ensure the mode is found.
     mDesiredMIdx = idx; // Set the desired mode index.
     mModes[mDesiredMIdx]->Reset();
+
+    currentMode = newMode;
 }
 
 // Update: Updates the current mode or handles the mode transition.

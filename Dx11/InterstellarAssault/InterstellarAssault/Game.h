@@ -56,6 +56,8 @@ public:
 		mSkyBoxColour = colour;
 	}
 
+	void UpdateMusicVolume(float newVolume);
+
 	std::vector<Model> mModels;                               // Holds our models in a vector for easy access.
 	enum Modelid { ALIEN, ARCADEMACHINE, WAREHOUSE, TOTAL };  // Identifier for models.
 
@@ -125,4 +127,8 @@ private:
 	ScoreSystem mScoreSys;  // Manages the scoring system.
 
 	lua_State* mpLuaState = nullptr;
+
+	// Songs
+	DirectX::SoundEffectInstance* automationSong = nullptr;
+	DirectX::SoundEffectInstance* trashySong = nullptr;
 };

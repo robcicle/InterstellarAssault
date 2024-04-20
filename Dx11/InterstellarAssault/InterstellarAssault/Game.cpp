@@ -49,6 +49,10 @@ Game::Game() : mpSB(nullptr), mpFont(nullptr), mpLuaState(nullptr)
 	mpSB = new SpriteBatch(&WinUtil::Get().GetD3D().GetDeviceCtx());
 	mpFont = new SpriteFont(&WinUtil::Get().GetD3D().GetDevice(), L"data/fonts/retrotech.spritefont");
 
+    // Initialization of audio.
+    automationSong = mAudMgr.CreateMusicInstance(AudioManager::MusicList::AUTOMATION_SONG);
+    trashySong = mAudMgr.CreateMusicInstance(AudioManager::MusicList::TRASHY_SONG);
+
 	// Adding different game modes to the Mode Manager.
 	mMMgr.AddMode(new IntroMode());
     mMMgr.AddMode(new MainMenuMode());
@@ -136,6 +140,17 @@ void Game::Update(float dTime)
     // Refresh input states for the next frame.
     mGamepad.RefreshState();
     mMKIn.RefreshState();
+
+    if (mMMgr.GetCurrentModeStr() != PlayMode::MODE_NAME && automationSong->GetState() != DirectX::SoundState::PLAYING)
+    {
+        trashySong->Stop();
+        automationSong->Play();
+    }
+    else if (mMMgr.GetCurrentModeStr() == PlayMode::MODE_NAME && trashySong->GetState() != DirectX::SoundState::PLAYING)
+    {
+        automationSong->Stop();
+        trashySong->Play();
+    }
 }
 
 // Render function: Renders the game's 2D and 3D elements.
@@ -150,6 +165,12 @@ void Game::Render(float dTime)
 
     // Render the game elements based on the current mode.
     RenderGame(dTime);
+}
+
+void Game::UpdateMusicVolume(float newMusicVolume)
+{
+    automationSong->SetVolume(newMusicVolume);
+    trashySong->SetVolume(newMusicVolume);
 }
 
 // RenderGame function: Renders game elements based on the current mode.

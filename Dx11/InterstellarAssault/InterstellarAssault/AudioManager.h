@@ -24,7 +24,14 @@ public:
         HIT,
         ENTER,
         SELECT,
-        TOTAL  // Number of sound effects.
+        STOTAL  // Number of sound effects.
+    };
+
+    // MusicList Enum: Enumerates all different types of music used in the game.
+    enum MusicList {
+        AUTOMATION_SONG,
+        TRASHY_SONG,
+        MTOTAL  // Number of songs.
     };
 
     // PlaySoundEffect function: Plays the specified sound effect at the given volume.
@@ -34,6 +41,9 @@ public:
 
     // CreateSFXInstance function: Creates an instance of a sound effect that can be controlled.
     DirectX::SoundEffectInstance* CreateSFXInstance(SoundList soundToPlay, float volume = 1.0f);
+
+    // CreateSFXInstance function: Creates an instance of a song that can be controlled.
+    DirectX::SoundEffectInstance* CreateMusicInstance(MusicList songToPlay, float volume = 1.0f);
 
     // Functions to adjust master, game, and music volumes.
     void AdjustMasterVolume(float newMasterVol) { mAudEngine->SetMasterVolume(newMasterVol); }
@@ -49,6 +59,7 @@ private:
     float mGameVolume = 1.0f;   // Default game volume.
     float mMusicVolume = 1.0f;  // Default music volume.
 
-    std::unique_ptr<DirectX::AudioEngine> mAudEngine;                       // The audio engine.
-    std::unique_ptr<DirectX::SoundEffect> mSoundEffects[SoundList::TOTAL];  // Array of sound effects.
+    std::unique_ptr<DirectX::AudioEngine> mAudEngine;                        // The audio engine.
+    std::unique_ptr<DirectX::SoundEffect> mSoundEffects[SoundList::STOTAL];  // Array of sound effects.
+    std::unique_ptr<DirectX::SoundEffect> mMusicList[MusicList::MTOTAL];     // Array of sound effects.
 };

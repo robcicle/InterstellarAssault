@@ -33,11 +33,21 @@ public:
     void Reset() override;
 
 private:
+    void AdjustMasterVolume();
+    void AdjustMusicVolume();
+    void AdjustGameVolume();
+
     std::vector<Text*> mTexts;       // Collection of Text objects for rendering.
 
     Text* mSettingsTitleText = nullptr;  // Text object for the settings menu title.
 
     UIManager mUIMgr;                  // UI Manager for managing UI elements in the settings menu.
+
+    float mCurrentMasterVolume = 0;      // Current master volume setting.
+    Text* mMasterVolumeText = nullptr;   // Text object for displaying the master volume.
+
+    float mCurrentMusicVolume = 0;      // Current music volume setting.
+    Text* mMusicVolumeText = nullptr;   // Text object for displaying the music volume.
 
     float mCurrentGameVolume = 0;      // Current game volume setting.
     Text* mGameVolumeText = nullptr;   // Text object for displaying the game volume.
