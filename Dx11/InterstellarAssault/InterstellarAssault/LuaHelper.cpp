@@ -4,6 +4,8 @@
 #include <iostream>
 
 using namespace std;
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
 bool LuaOK(lua_State* L, int id)
 {
@@ -15,7 +17,7 @@ bool LuaOK(lua_State* L, int id)
     return true;  // No error
 }
 
-int LuaGetInt(lua_State* L, const std::string& name)
+int LuaGetInt(lua_State* L, const string& name)
 {
     // Get Lua variable by name
     lua_getglobal(L, name.c_str());
@@ -26,7 +28,7 @@ int LuaGetInt(lua_State* L, const std::string& name)
     return (int)lua_tointeger(L, -1);
 }
 
-std::string LuaGetStr(lua_State* L, const std::string& name)
+string LuaGetStr(lua_State* L, const string& name)
 {
     // Get Lua variable by name
     lua_getglobal(L, name.c_str());
@@ -35,4 +37,29 @@ std::string LuaGetStr(lua_State* L, const std::string& name)
         assert(false);
 
     return lua_tostring(L, -1);
+}
+
+Vector2 LuaGetVec2(lua_State* L, const string& name)
+{
+    int x, y;
+
+    lua_getglobal(L, name.c_str());
+    if (!lua_istable(L, -1))
+        assert(false);
+
+    lua_pushstring(L, "x");
+    // Pops X off and replaces it with the value
+    lua_gettable(L, -2);
+    x = (int)lua_tointeger(L, -1);
+    // Then pop the value off once we have X
+    lua_pop(L, 1);
+
+    lua_pushstring(L, "y");
+    // Pops Y off and replaces it with the value
+    lua_gettable(L, -2);
+    y = (int)lua_tointeger(L, -1);
+    // Then pop the value off once we have Y
+    lua_pop(L, 1);
+
+    return DirectX::SimpleMath::Vector2((float)x, (float)y);
 }

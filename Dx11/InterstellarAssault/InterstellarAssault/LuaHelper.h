@@ -4,6 +4,7 @@
 #include <string>
 #include <functional>
 #include <map>
+#include <SimpleMath.h>
 
 extern "C"
 {
@@ -24,3 +25,5 @@ int LuaGetInt(lua_State* L, const std::string& name);
 
 // Return a string from Lua
 std::string LuaGetStr(lua_State* L, const std::string& name);
+
+DirectX::SimpleMath::Vector2 LuaGetVec2(lua_State* L, const std::string& name);
