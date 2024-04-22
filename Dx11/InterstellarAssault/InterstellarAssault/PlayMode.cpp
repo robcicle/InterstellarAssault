@@ -486,7 +486,6 @@ void PlayMode::EnterScoreData::ProcessKey(char key)
 	// If all else passes then it continues
 	mNameString = newNameString;
 	std::transform(mNameString.begin(), mNameString.end(), mNameString.begin(), ::toupper);
-	DBOUT(mNameString);
 	mNameText->mString = mNameString;
 	mNameText->CentreOriginX();
 
