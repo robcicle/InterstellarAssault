@@ -37,10 +37,7 @@ public:
     Laser* mLaser = nullptr;
 private:
     EnemyType mEType = EnemyType::OCTOPUS; // Variable to store the type of enemy
-    float mShootTimer = 0;                   // For keeping track of the amount of time
-
-    std::random_device mRD;
-    std::mt19937 mMt{ mRD() };
+    float mShootTimer = 0;                 // For keeping track of the amount of time
 };
 
 // EnemyManager class: Inherits from GameObj and manages all enemy entities in the game

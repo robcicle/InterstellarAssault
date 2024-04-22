@@ -103,8 +103,8 @@ void Enemy::Update(float dTime)
 	if (mShootTimer <= (float)GC::ENEMY_TIME_BTWN_SHOTS)
 		return;
 
-	std::uniform_int_distribution<> uit(0, 100);
-	int random = uit(mMt);
+	// Generate a random number between 0 and 100
+	int random = (int)floor(LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 100));
 
 	if (random >= GC::ENEMY_SHOOT_CHANCE)
 	{
