@@ -62,14 +62,20 @@ Game::Game() : mpSB(nullptr), mpFont(nullptr), mpLuaState(nullptr)
 	mMMgr.AddMode(new PlayMode());
 	mMMgr.AddMode(new GameOverMode());
 
+#if defined(DEBUG) || defined(_DEBUG)
     // Make sure our mode manager goes to the correct one
 	mMMgr.SwitchMode(MainMenuMode::MODE_NAME);
+
+#else
+    // Make sure our mode manager goes to the correct one
+    mMMgr.SwitchMode(IntroMode::MODE_NAME);
 
 	// Begin loading models in a separate thread.
 	mLoadData.mTotalToLoad = Modelid::TOTAL;
 	mLoadData.mLoadedSoFar = 0;
 	mLoadData.mRunning = true;
 	mLoadData.mLoader = std::async(launch::async, &Game::Load, this);
+#endif
 
     // Because of how IsUp or MouseButtonUp works, we need to refresh
     // the states immediatly otherwise EVERYTHING is up on first frame

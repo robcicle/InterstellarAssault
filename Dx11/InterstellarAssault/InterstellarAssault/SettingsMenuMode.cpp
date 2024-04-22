@@ -94,7 +94,10 @@ SettingsMenuMode::SettingsMenuMode()
 	mTexts.push_back(mMasterVolumeText);
 
 	// Initialize the music volume counter.
-	UICounter musicVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetMusicVolume() * 10.0f), 0, 10, [&]() {
+	UICounter musicVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, 
+		//(int)(aM.GetMusicVolume() * 10.0f)
+		(int)floor(LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 10))
+		, 0, 10, [&]() {
 		AdjustMusicVolume();
 		});
 
@@ -113,7 +116,9 @@ SettingsMenuMode::SettingsMenuMode()
 	mTexts.push_back(mMusicVolumeText);
 
 	// Initialize the game volume counter.
-	UICounter gameVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite, (int)(aM.GetGameVolume() * 10.0f), 0, 10, [&]() {
+	UICounter gameVolumeCounter(d3d, counterText, upArrowSprite, downArrowSprite,
+		(int)floor(LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 10))
+		, 0, 10, [&]() {
 		AdjustGameVolume();
 		});
 

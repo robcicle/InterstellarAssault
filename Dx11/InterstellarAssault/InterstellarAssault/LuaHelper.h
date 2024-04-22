@@ -20,10 +20,13 @@ extern "C"
 // Check for errors
 bool LuaOK(lua_State* L, int id);
 
-// Return an int from Lua
+// ******FUNCTIONS******
+float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max);
+
+// ******VARIABLES*******
+// Return an int from a Lua script
 int LuaGetInt(lua_State* L, const std::string& name);
-
-// Return a string from Lua
+// Return a string from a Lua script
 std::string LuaGetStr(lua_State* L, const std::string& name);
-
+// Return a vector from a Lua script
 DirectX::SimpleMath::Vector2 LuaGetVec2(lua_State* L, const std::string& name);
