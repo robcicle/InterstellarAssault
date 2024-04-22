@@ -25,6 +25,10 @@ AudioManager::AudioManager()
 	// Load music from files into music objects.
 	mMusicList[AUTOMATION_SONG] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/music/automation_song.wav");
 	mMusicList[TRASHY_SONG] = std::make_unique<SoundEffect>(mAudEngine.get(), L"data/audio/music/trashy_song.wav");
+
+#if defined(DEBUG) || defined(_DEBUG)
+	AdjustMasterVolume(0.1f);
+#endif
 }
 
 // AudioManager Destructor: Handles the cleanup of audio engine and sound effects.
