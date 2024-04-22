@@ -278,8 +278,7 @@ void EnemyManager::Update(float dTime)
 
 				// Because we're moving down, lets get a random number and 
 				// see if it's with our chance of getting the random ufo
-				std::uniform_int_distribution<> uit(0, 100);
-				int random = uit(mMt);
+				int random = (int)floor(LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 100));
 
 				if (!mUfoEnemy->mActive && random <= GC::ENEMY_UFO_CHANCE || mUfoActive)
 				{

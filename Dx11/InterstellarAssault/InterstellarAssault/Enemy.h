@@ -73,9 +73,6 @@ private:
     Enemy* mEnemies[GC::NUM_ENEMIES];  // Array to store all enemy entities
     Enemy* mUfoEnemy = nullptr;        // Specifically our UFO enemy because it does things different
 
-    std::random_device mRD;
-    std::mt19937 mMt{ mRD() };
-
     int mDirection;        // Direction of enemy movement (1 for left, -1 for right)
     int mUfoDirection;     // Direction of ufo movement (1 for left, -1 for right)
     float mSpeed = 10.0f;  // Speed of enemy movement
