@@ -56,6 +56,8 @@ public:
 		mSkyBoxColour = colour;
 	}
 
+	// UpdateMusicVolume: Music is controlled here so when we update in settings
+	// this function allows for the changes to actually occur in realtime.
 	void UpdateMusicVolume(float newVolume);
 
 	std::vector<Model> mModels;                               // Holds our models in a vector for easy access.

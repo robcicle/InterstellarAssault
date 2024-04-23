@@ -147,10 +147,15 @@ void Game::Update(float dTime)
     mGamepad.RefreshState();
     mMKIn.RefreshState();
 
-    if (mMMgr.GetCurrentModeStr() != PlayMode::MODE_NAME && automationSong->GetState() != DirectX::SoundState::PLAYING)
+    if (mMMgr.GetCurrentModeStr() == IntroMode::MODE_NAME)
     {
+        automationSong->Stop();
         trashySong->Stop();
+    }
+    else if (mMMgr.GetCurrentModeStr() != PlayMode::MODE_NAME && automationSong->GetState() != DirectX::SoundState::PLAYING)
+    {
         automationSong->Play();
+        trashySong->Stop();
     }
     else if (mMMgr.GetCurrentModeStr() == PlayMode::MODE_NAME && trashySong->GetState() != DirectX::SoundState::PLAYING)
     {
