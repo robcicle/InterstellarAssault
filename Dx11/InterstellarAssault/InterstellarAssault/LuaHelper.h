@@ -6,6 +6,7 @@
 #include <map>
 #include <SimpleMath.h>
 
+// Required Lua libraries
 extern "C"
 {
 	#include "../lua-5.4.4/include/lua.h"
@@ -21,6 +22,8 @@ extern "C"
 bool LuaOK(lua_State* L, int id);
 
 // ******FUNCTIONS******
+// 
+// Return a random number from a Lua function
 float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max);
 
 // ******VARIABLES*******

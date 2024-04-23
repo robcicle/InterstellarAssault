@@ -18,20 +18,27 @@ bool LuaOK(lua_State* L, int id)
 }
 
 // ******FUNCTIONS******
+
+// Return a random number from a Lua function
 float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max)
 {
+    // Get Lua function by name
     lua_getglobal(L, fName.c_str());
     if (!lua_isfunction(L, -1))
         assert(false);
 
+    // Push the parameters for the function
     lua_pushnumber(L, min);
     lua_pushnumber(L, max);
 
+    // Calls the function in protected mode.
     if (!LuaOK(L, lua_pcall(L, 2, 1, 0)))
         assert(false);
 
+    // Grab the returned variable from the function
     float returnedVariable = (float)lua_tonumber(L, -1);
 
+    // Pop it off as we've retrieved it
     lua_pop(L, 1);
     
     return returnedVariable;
