@@ -287,7 +287,8 @@ void Game::LoadData::Render(float dTime, SpriteBatch& batch)
 
     // Calculate the current fill amount for the loading bar based on the number of loaded models.
     // This interpolates the fill amount smoothly for a more visually pleasing loading bar.
-    mCurrentFillAmt = Lerp(mCurrentFillAmt, mMaxFillAmt * ((float)mLoadedSoFar / (float)mTotalToLoad), dTime * 3);
+    // Uses a Lua UtilityFunctions.lua script
+    mCurrentFillAmt = LuaFLerpNum(Game::Get().GetLuaState(), "lerpNumber", mCurrentFillAmt, mMaxFillAmt * ((float)mLoadedSoFar / (float)mTotalToLoad), dTime * 3);
 
     // Update the texture rectangle for the loading fill to reflect the current progress.
     mLoadFill.SetTexRect({ mLoadFillRect.left, mLoadFillRect.top, mCurrentFillAmt, mLoadFillRect.bottom });
