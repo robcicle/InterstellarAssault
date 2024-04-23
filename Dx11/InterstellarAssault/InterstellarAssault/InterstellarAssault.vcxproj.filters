@@ -291,7 +291,10 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Script.lua">
+    <None Include="GameVariables.lua">
+      <Filter>Lua Scripts</Filter>
+    </None>
+    <None Include="UtilityFunctions.lua">
       <Filter>Lua Scripts</Filter>
     </None>
   </ItemGroup>
