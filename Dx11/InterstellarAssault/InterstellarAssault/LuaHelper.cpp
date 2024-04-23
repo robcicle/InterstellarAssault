@@ -44,6 +44,32 @@ float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max
     return returnedVariable;
 }
 
+
+float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, float t)
+{
+    // Get Lua function by name
+    lua_getglobal(L, fName.c_str());
+    if (!lua_isfunction(L, -1))
+        assert(false);
+
+    // Push the parameters for the function
+    lua_pushnumber(L, a);
+    lua_pushnumber(L, b);
+    lua_pushnumber(L, t);
+
+    // Calls the function in protected mode.
+    if (!LuaOK(L, lua_pcall(L, 3, 1, 0)))
+        assert(false);
+
+    // Grab the returned variable from the function
+    float returnedVariable = (float)lua_tonumber(L, -1);
+
+    // Pop it off as we've retrieved it
+    lua_pop(L, 1);
+
+    return returnedVariable;
+}
+
 // ******VARIABLES*******
 
 // Return an int from a Lua script
