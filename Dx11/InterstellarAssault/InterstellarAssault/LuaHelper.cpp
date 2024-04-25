@@ -193,16 +193,16 @@ Vector2 LuaGetVec2(lua_State* L, const string& name)
 }
 
 // Static member initialization: Stores all registered commands accessible by function name.
-std::map<std::string, Dispatcher::Command> Dispatcher::library;
+map<string, Dispatcher::Command> Dispatcher::library;
 
 // LuaCall function: Called from Lua to dispatch the request to the corresponding C++ function.
 int Dispatcher::LuaCall(lua_State* L)
 {
     // Retrieve the function name from the first argument passed from Lua.
-    std::string fName = lua_tostring(L, 1);
+    string fName = lua_tostring(L, 1);
 
     // Find the command in the library map using the function name.
-    std::map<std::string, Command>::iterator it = library.find(fName);
+    map<string, Command>::iterator it = library.find(fName);
     // Ensure the function is registered before proceeding.
     assert(it != library.end());
 
@@ -210,12 +210,12 @@ int Dispatcher::LuaCall(lua_State* L)
     Command& cmd = (*it).second;
 
     // Check if the function pointer is valid before calling.
-    if (cmd.voidintfunc)
+    if (cmd.voidintfunct)
     {
         // Retrieve the integer parameter from Lua stack to pass to the C++ function.
-        int param = lua_tointeger(L, 2);
+        int param = (int)lua_tointeger(L, 2);
         // Call the registered function with the parameter.
-        cmd.voidintfunc(param);
+        cmd.voidintfunct(param);
         // Pop the parameter off the Lua stack after use.
         lua_pop(L, 1);
     }

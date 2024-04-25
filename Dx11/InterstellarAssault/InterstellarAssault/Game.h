@@ -25,7 +25,7 @@ public:
 	MouseAndKeys mMKIn;  // Handle mouse and keyboard inputs specific to the game.
 	Gamepad mGamepad;    // Handle controller/joystick inputs.
 
-	Game(lua_State* L);    // Constructor: Initializes the game and starts resources loading.
+	Game(lua_State* L, Dispatcher& D);    // Constructor: Initializes the game and starts resources loading.
 	~Game() {  // Destructor: Ensures that resources are released.
 		Release();  
 	}
@@ -48,6 +48,7 @@ public:
 	ModeMgr& GetModeMgr() { return mMMgr; }
 	AudioManager& GetAudMgr() { return mAudMgr; }
 	ScoreSystem& GetScoreSys() { return mScoreSys; }
+	Dispatcher& GetDispatcher() { return dispatchRef; }
 	DirectX::SpriteFont* GetFont() { return mpFont; }
 	lua_State* GetLuaState() { return mpLuaState; }
 
@@ -129,6 +130,7 @@ private:
 	ScoreSystem mScoreSys;  // Manages the scoring system.
 
 	lua_State* mpLuaState = nullptr;
+	Dispatcher& dispatchRef;
 
 	// Songs
 	DirectX::SoundEffectInstance* automationSong = nullptr;

@@ -31,7 +31,8 @@ void Setup(Model& m, Mesh& source, float scale, const Vector3& pos, const Vector
 }
 
 // Game Constructor: Sets up the game, loads resources, and initializes modes.
-Game::Game(lua_State* L) : mpLuaState(L), mpSB(nullptr), mpFont(nullptr)
+Game::Game(lua_State* L, Dispatcher& D) : mpLuaState(L), dispatchRef(D),
+mpSB(nullptr), mpFont(nullptr)
 #if defined(DEBUG) || defined(_DEBUG)
     , mDebugData(WinUtil::Get().GetD3D())
 #endif

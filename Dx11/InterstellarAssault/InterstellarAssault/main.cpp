@@ -78,7 +78,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
 	lua_register(L, "adjustMusicVolume", LuaAdjustMusicVol);
 	lua_register(L, "adjustGameVolume", LuaAdjustGameVol);
 
-	new Game(L);  // Instantiate and initialize the Game object.
+	Dispatcher D;
+	D.Init(L);
+
+	new Game(L, D);  // Instantiate and initialize the Game object.
 
 	// Main game loop.
 	bool canUpdateRender;

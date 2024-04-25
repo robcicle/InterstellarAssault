@@ -71,7 +71,7 @@ public:
     struct Command
     {
         typedef std::function<void(int)> voidintfunc;  // Type definition for a function taking an int.
-        voidintfunc voidintfunc;  // Instance of the void(int) function.
+        voidintfunc voidintfunct;  // Instance of the void(int) function.
     };
 
     // Init function: Initializes the Dispatcher by registering it with Lua.
@@ -88,6 +88,24 @@ public:
         assert(library.find(fName) == library.end());
         // Stores the command in the library map under the given function name.
         library[fName] = cmd;
+    }
+
+    // Unregister function: Unregisters a game function previously registered with a given name.
+    void Unregister(const std::string& fName)
+    {
+        // Find the command in the library map.
+        auto it = library.find(fName);
+        // Ensure the function is actually registered before attempting to remove it.
+        if (it != library.end())
+        {
+            // Erase the command from the library map using the iterator.
+            library.erase(it);
+        }
+        else
+        {
+            // Optionally, handle the case where the function name is not found.
+            assert(false); // or some other error handling approach
+        }
     }
 
     // LuaCall function: Called from Lua to dispatch the request to the corresponding C++ function.
