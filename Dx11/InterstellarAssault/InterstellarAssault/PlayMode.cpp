@@ -112,6 +112,8 @@ void PlayMode::Init()
 	mQuitConfirmText->scale = 0.7f;
 	Add(mQuitConfirmText);
 	
+	// Call the Lua function "setPlayerLifes" which will call a
+	// function in the Player class and set the lifes to 10.
 	CallVoidVoidCFunc(Game::Get().GetLuaState(), "setPlayerLifes");
 }
 

@@ -22,6 +22,9 @@ function adjustGameVolume(newAmount)
     adjustGameVolume(newAmount, 1)
 end
 
+-- setPlayerLifes function: Sets the player's life count to a predefined number.
 function setPlayerLifes()
-    CDispatcher("setLifes", 10)
+    -- Calls the C++ function registered as 'setLifes' in the Dispatcher with the argument 5.
+    -- This sets the player's life count to 5 rather than the original 3.
+    CDispatcher("setLifes", 5)
 end
