@@ -1,5 +1,9 @@
 -- playerSprite variable: Defines the path to the sprite image used for the player's ship.
 playerSprite = "sprites/ship2.dds"
+-- bgnd2_01 variable: Defines the path to the first image of the background's layers.
+bgnd2_01 = "background_layers/background02_001.dds"
+-- bgnd2_02 variable: Defines the path to the second image of the background's layers.
+bgnd2_02 = "background_layers/background02_002.dds"
 
 -- Enemies configuration variables:
 -- enemiesPerRow: Specifies the number of enemies in each row.

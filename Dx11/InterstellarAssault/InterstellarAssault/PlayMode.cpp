@@ -83,12 +83,14 @@ void PlayMode::Init()
 	mScoreText = new Text(d3d);
 	mScoreText->SetFont(*retrotechSF);
 	mScoreText->mPos = Vector2((float)w / 2.0f, (float)(h % 10));
+	mScoreText->colour = Colors::Black;
 	mScoreText->mActive = true;
 	Add(mScoreText);
 
 	mLifesText = new Text(d3d);
 	mLifesText->SetFont(*retrotechSF);
 	mLifesText->mPos = Vector2((float)(w % 10), (float)(h % 10));
+	mLifesText->colour = Colors::Black;
 	mLifesText->mActive = true;
 	Add(mLifesText);
 
@@ -126,8 +128,8 @@ void PlayMode::InitBgnd()
 
 	// Load and set up the background textures and sprites.
 	pair<string, string> files[GC::BGND_LAYERS]{
-		{ "bgnd0","background_layers/background01_001.dds" },
-		{ "bgnd1","background_layers/background01_002.dds" }
+		{ "bgnd0", LuaGetStr(Game::Get().GetLuaState(), "bgnd2_01")},
+		{ "bgnd1", LuaGetStr(Game::Get().GetLuaState(), "bgnd2_02") }
 	};
 	int i = 0;
 	for (auto& f : files)
