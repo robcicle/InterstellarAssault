@@ -23,9 +23,16 @@ bool LuaOK(lua_State* L, int id);
 
 // ******FUNCTIONS******
 // 
+// Call a Lua function from our C++ code
+void CallVoidVoidCFunc(lua_State* L, const std::string& fName);
+// Call a Lua function from our C++ and pass through a float
+void CallVoidVoidCFunc(lua_State* L, const std::string& fName, float number);
+
+
 // Return a random number from a Lua function
 float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max);
 
+// Return a number that has gone through linear interpolation
 float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, float t);
 
 // ******VARIABLES*******

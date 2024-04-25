@@ -19,6 +19,39 @@ bool LuaOK(lua_State* L, int id)
 
 // ******FUNCTIONS******
 
+void CallVoidVoidCFunc(lua_State* L, const std::string& fName)
+{
+    // Get Lua function by name
+    lua_getglobal(L, fName.c_str());
+
+    // Check it's a function
+    if (!lua_isfunction(L, -1))
+        assert(false);
+
+    // Calls the function in protected mode.
+    if (!LuaOK(L, lua_pcall(L, 0, 0, 0)))
+        assert(false);
+}
+
+void CallVoidVoidCFunc(lua_State* L, const std::string& fName, float number)
+{
+    // Get Lua function by name
+    lua_getglobal(L, fName.c_str());
+
+    // Check it's a function
+    if (!lua_isfunction(L, -1))
+        assert(false);
+
+    // Push the parameters for the function
+    lua_pushnumber(L, number);
+
+    // Calls the function in protected mode.
+    if (!LuaOK(L, lua_pcall(L, 1, 0, 0)))
+        assert(false);
+
+    //lua_pop(L, 1);
+}
+
 // Return a random number from a Lua function
 float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max)
 {
@@ -44,7 +77,7 @@ float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max
     return returnedVariable;
 }
 
-
+// Return a number that has gone through linear interpolation
 float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, float t)
 {
     // Get Lua function by name

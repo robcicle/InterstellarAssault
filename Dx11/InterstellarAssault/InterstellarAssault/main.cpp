@@ -4,6 +4,7 @@
 #include <d3d11.h>
 
 #include "WindowUtils.h"
+#include "LuaHelper.h"
 #include "Game.h"
 
 using namespace std;
