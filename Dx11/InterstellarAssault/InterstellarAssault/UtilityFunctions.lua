@@ -1,9 +1,11 @@
--- Function for generating a random number then returning it.
+-- randomNumber function: Generates and returns a random number between the specified min and max values.
 function randomNumber(min, max)
-	return math.random(min, max)
+    -- Uses Lua's math.random to compute a random number in the provided range.
+    return math.random(min, max)
 end
 
--- Function for linear interpolation between two values based on a t parameter.
+-- lerpNumber function: Performs linear interpolation between two values based on parameter t.
 function lerpNumber(a, b, t)
-	return a + t * (b - a)
+    -- Calculates the interpolated value using the formula: a + t * (b - a).
+    return a + t * (b - a)
 end
