@@ -13,6 +13,11 @@ Player::Player(MyD3D& d3d)
 	Init();
 }
 
+Player::~Player()
+{
+	Game::Get().GetDispatcher().Unregister("setLifes");
+}
+
 // Initialize or reset the player's state and position
 void Player::Init()
 {
@@ -36,6 +41,9 @@ void Player::Init()
 
 	// Set the initial fire timer for missile shooting
 	mFireTimer = GetClock() + GC::FIRE_DELAY;
+
+	Dispatcher::Command::voidintfunc f{ [this](int lifes) {return SetLifes(lifes);  } };
+	Game::Get().GetDispatcher().Register("setLifes", Dispatcher::Command{ f });
 }
 
 // Update function: Handle the logic behind the player's movement, shooting, health, etc.

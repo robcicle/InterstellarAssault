@@ -112,6 +112,7 @@ void PlayMode::Init()
 	mQuitConfirmText->scale = 0.7f;
 	Add(mQuitConfirmText);
 	
+	CallVoidVoidCFunc(Game::Get().GetLuaState(), "setPlayerLifes");
 }
 
 // InitBgnd function: Initializes background layers for parallax scrolling effect.

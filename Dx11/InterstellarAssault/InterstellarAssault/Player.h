@@ -9,7 +9,8 @@
 class Player : public GameObj
 {
 public:
-	Player(MyD3D& d3d);                           // Constructor to initialize the player
+	Player(MyD3D& d3d);                 // Constructor to initialize the player
+	~Player();
 	void Update(float dTime) override;  // Update function called every frame to handle player movement and actions
 	void Render(float dTime, DirectX::SpriteBatch& batch) override;
 
@@ -23,6 +24,7 @@ public:
 	}
 
 	void AddLifes(int amount) { mLifes += amount; }
+	void SetLifes(int amount) { mLifes = amount; }
 
 	bool IsAlive() const { 
 		if (mLifes > 0)

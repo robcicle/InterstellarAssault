@@ -21,3 +21,7 @@ function adjustGameVolume(newAmount)
     -- This function calls the C++ LuaAdjustGameVol defined in LuaHelper.h with a parameter.
     adjustGameVolume(newAmount, 1)
 end
+
+function setPlayerLifes()
+    CDispatcher("setLifes", 10)
+end
