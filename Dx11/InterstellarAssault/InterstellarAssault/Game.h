@@ -25,7 +25,7 @@ public:
 	MouseAndKeys mMKIn;  // Handle mouse and keyboard inputs specific to the game.
 	Gamepad mGamepad;    // Handle controller/joystick inputs.
 
-	Game();    // Constructor: Initializes the game and starts resources loading.
+	Game(lua_State* L);    // Constructor: Initializes the game and starts resources loading.
 	~Game() {  // Destructor: Ensures that resources are released.
 		Release();  
 	}

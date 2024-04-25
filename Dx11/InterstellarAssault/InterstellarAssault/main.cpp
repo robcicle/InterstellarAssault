@@ -58,7 +58,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
 	d3d.GetFontCache().SetAssetPath("data/fonts/");
 
 	srand((unsigned int)time(0));  // Seed the random number generator.
-	new Game();  // Instantiate and initialize the Game object.
+
+	// Initialize Lua
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L);  // Open main libraries for scripts
+
+	// Load and parse Lua scripts
+	if (!LuaOK(L, luaL_dofile(L, "UtilityFunctions.lua")))
+		assert(false);
+	if (!LuaOK(L, luaL_dofile(L, "GameVariables.lua")))
+		assert(false);
+
+	new Game(L);  // Instantiate and initialize the Game object.
 
 	// Main game loop.
 	bool canUpdateRender;
@@ -78,6 +89,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
 	delete& gm;
 	d3d.ReleaseD3D(true);
 	delete& WinUtil::Get();
+
+	// Close our Lua
+	lua_close(L);
 
 	return 0;
 }

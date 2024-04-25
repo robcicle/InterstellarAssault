@@ -31,21 +31,11 @@ void Setup(Model& m, Mesh& source, float scale, const Vector3& pos, const Vector
 }
 
 // Game Constructor: Sets up the game, loads resources, and initializes modes.
-Game::Game() : mpSB(nullptr), mpFont(nullptr), mpLuaState(nullptr)
+Game::Game(lua_State* L) : mpLuaState(L), mpSB(nullptr), mpFont(nullptr)
 #if defined(DEBUG) || defined(_DEBUG)
     , mDebugData(WinUtil::Get().GetD3D())
 #endif
 {
-    // Initialize Lua
-    mpLuaState = luaL_newstate();
-    luaL_openlibs(mpLuaState);  // Open main libraries for scripts
-
-    // Load and parse Lua scripts
-    if (!LuaOK(mpLuaState, luaL_dofile(mpLuaState, "UtilityFunctions.lua")))
-        assert(false);
-    if (!LuaOK(mpLuaState, luaL_dofile(mpLuaState, "GameVariables.lua")))
-        assert(false);
-
 	// Initialization of input handling, sprite batch, and fonts.
 	mMKIn.Initialize(WinUtil::Get().GetMainWnd(), true, false);
 	mpSB = new SpriteBatch(&WinUtil::Get().GetD3D().GetDeviceCtx());
@@ -118,8 +108,6 @@ void Game::Release()
 
     // Release all modes managed by Mode Manager.
     mMMgr.Release();
-
-    lua_close(mpLuaState);
 }
 
 // Update function: Updates the game state including input, audio, and mode manager.
