@@ -85,6 +85,19 @@ int LuaGetInt(lua_State* L, const string& name)
     return (int)lua_tointeger(L, -1);
 }
 
+// Return a float from a Lua script
+float LuaGetNum(lua_State* L, const std::string& name)
+{
+    // Get Lua variable by name
+    lua_getglobal(L, name.c_str());
+
+    // Check it's a number/float
+    if (!lua_isnumber(L, -1))
+        assert(false);
+
+    return (float)lua_tonumber(L, -1);
+}
+
 // Return a string from a Lua script
 string LuaGetStr(lua_State* L, const string& name)
 {

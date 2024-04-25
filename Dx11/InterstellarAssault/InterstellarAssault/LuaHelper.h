@@ -33,6 +33,9 @@ float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, floa
 // Return an int from a Lua script
 int LuaGetInt(lua_State* L, const std::string& name);
 
+// Return a float from a Lua script
+float LuaGetNum(lua_State* L, const std::string& name);
+
 // Return a string from a Lua script
 std::string LuaGetStr(lua_State* L, const std::string& name);
 

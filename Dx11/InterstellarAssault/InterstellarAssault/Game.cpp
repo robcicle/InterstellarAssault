@@ -41,9 +41,9 @@ Game::Game() : mpSB(nullptr), mpFont(nullptr), mpLuaState(nullptr)
     luaL_openlibs(mpLuaState);  // Open main libraries for scripts
 
     // Load and parse Lua scripts
-    if (!LuaOK(mpLuaState, luaL_dofile(mpLuaState, "GameVariables.lua")))
-        assert(false);
     if (!LuaOK(mpLuaState, luaL_dofile(mpLuaState, "UtilityFunctions.lua")))
+        assert(false);
+    if (!LuaOK(mpLuaState, luaL_dofile(mpLuaState, "GameVariables.lua")))
         assert(false);
 
 	// Initialization of input handling, sprite batch, and fonts.

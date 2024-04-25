@@ -140,8 +140,10 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 
 	// Calculate positions and dimensions for enemy arrangement
 	int screenWidth = WinUtil::Get().GetClientWidth();
-	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)GC::ROWX_SPACING; // Width of an enemy sprite + our horizontal spacing
-	float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
+	//float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)GC::ROWX_SPACING; // Width of an enemy sprite + our horizontal spacing
+	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)LuaGetInt(Game::Get().GetLuaState(), "rowXSpacing"); // Width of an enemy sprite + our horizontal spacing
+	//float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
+	float totalRowWidth = (float)LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow") * enemyWidth;
 	float initialX = (screenWidth - totalRowWidth) / 2; // Center the row of enemies
 
 	// Now we're done using the octopusData so lets delete it
@@ -150,8 +152,17 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 	Enemy* e;
 
 	// Create and position enemies based on rows and columns
-	for (int row = 0; row < GC::NUM_ROWS; row++)
-		for (int col = 0; col < GC::ENEMIES_PER_ROW; col++)
+
+	// Grab our variables from the Lua script.
+	int numOfRows = LuaGetInt(Game::Get().GetLuaState(), "numOfRows");
+	int enemiesPerRow = LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow");
+	int rowYSpacing = LuaGetInt(Game::Get().GetLuaState(), "rowYSpacing");
+	int enemyInitialY = LuaGetInt(Game::Get().GetLuaState(), "enemyInitialY");
+
+	//for (int row = 0; row < GC::NUM_ROWS; row++)
+	for (int row = 0; row < numOfRows; row++)
+		//for (int col = 0; col < GC::ENEMIES_PER_ROW; col++)
+		for (int col = 0; col < enemiesPerRow; col++)
 		{
 			// Determine the type of enemy based on row
 			if (row > 2)
@@ -162,7 +173,8 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 				e = new Enemy(Enemy::EnemyType::SQUID);
 
 			// Set the initial position with some spacing
-			e->SetPosition(Vector2(initialX + ((float)(col + 0.5) * enemyWidth), (float)GC::ENEMEY_INITIAL_Y + (row * GC::ROWY_SPACING)));
+			//e->SetPosition(Vector2(initialX + ((float)(col + 0.5) * enemyWidth), (float)GC::ENEMY_INITIAL_Y + (row * GC::ROWY_SPACING)));
+			e->SetPosition(Vector2(initialX + ((float)(col + 0.5) * enemyWidth), (float)enemyInitialY + (row * rowYSpacing)));
 			mEnemies[mActiveEnemies] = e; // Add to the vector of enemies
 			e->mActive = true; // Activate the enemy
 
@@ -171,7 +183,8 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 
 	// Finally create the ufo enemy
 	mUfoEnemy = new Enemy(Enemy::EnemyType::UFO);
-	mUfoEnemy->SetPosition(Vector2(0, (float)GC::UFO_INITIAL_Y));
+	//mUfoEnemy->SetPosition(Vector2(0, (float)GC::UFO_INITIAL_Y));
+	mUfoEnemy->SetPosition(Vector2(0, (float)LuaGetInt(Game::Get().GetLuaState(), "ufoInitialY")));
 	mUfoDirection = -1;
 	mUfoEnemy->mActive = false;
 
@@ -209,20 +222,29 @@ void EnemyManager::Init()
 
 	// Calculate positions and dimensions for enemy arrangement
 	int screenWidth = WinUtil::Get().GetClientWidth();
-	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)GC::ROWX_SPACING; // Width of an enemy sprite + our horizontal spacing
-	float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
+	//float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)GC::ROWX_SPACING; // Width of an enemy sprite + our horizontal spacing
+	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)LuaGetInt(Game::Get().GetLuaState(), "rowXSpacing"); // Width of an enemy sprite + our horizontal spacing	//float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
+	float totalRowWidth = (float)LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow") * enemyWidth;
 	float initialX = (screenWidth - totalRowWidth) / 2; // Center the row of enemies
 
 	// Now we're done using the octopusData so lets delete it
 	delete octopusData;
 
 	// Create and position enemies based on rows and columns
-	for (int row = 0; row < GC::NUM_ROWS; row++)
+	int numOfRows = LuaGetInt(Game::Get().GetLuaState(), "numOfRows");
+	int enemiesPerRow = LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow");
+	int rowYSpacing = LuaGetInt(Game::Get().GetLuaState(), "rowYSpacing");
+	int enemyInitialY = LuaGetInt(Game::Get().GetLuaState(), "enemyInitialY");
+
+	//for (int row = 0; row < GC::NUM_ROWS; row++)
+	for (int row = 0; row < numOfRows; row++)
 	{
-		for (int col = 0; col < GC::ENEMIES_PER_ROW; col++)
+		//for (int col = 0; col < GC::ENEMIES_PER_ROW; col++)
+		for (int col = 0; col < enemiesPerRow; col++)
 		{
 			// Reset to the initial position with some spacing
-			mEnemies[mActiveEnemies]->SetPosition(Vector2(initialX + ((float)(col + 0.5) * enemyWidth), (float)GC::ENEMEY_INITIAL_Y + (row * GC::ROWY_SPACING)));
+			//mEnemies[mActiveEnemies]->SetPosition(Vector2(initialX + ((float)(col + 0.5) * enemyWidth), (float)GC::ENEMY_INITIAL_Y + (row * GC::ROWY_SPACING)));
+			mEnemies[mActiveEnemies]->SetPosition(Vector2(initialX + ((float)(col + 0.5) * enemyWidth), (float)enemyInitialY + (row * rowYSpacing)));
 			mEnemies[mActiveEnemies]->mActive = true; // Make the the enemy active
 			mActiveEnemies++;
 		}
