@@ -24,7 +24,7 @@ bool LuaOK(lua_State* L, int id)
 // ******FUNCTIONS******
 
 // CallVoidVoidCFunc function: Call a Lua function by name with no parameters or return values.
-void CallVoidVoidCFunc(lua_State* L, const std::string& fName)
+void CallVoidVoidCFunc(lua_State* L, const string& fName)
 {
     lua_getglobal(L, fName.c_str()); // Retrieve the function from the Lua global scope
 
@@ -36,7 +36,7 @@ void CallVoidVoidCFunc(lua_State* L, const std::string& fName)
 }
 
 // CallVoidVoidCFunc function: Call a Lua function by name, passing a single float parameter.
-void CallVoidVoidCFunc(lua_State* L, const std::string& fName, float number)
+void CallVoidVoidCFunc(lua_State* L, const string& fName, float number)
 {
     lua_getglobal(L, fName.c_str()); // Retrieve the function from Lua global scope
 
@@ -50,7 +50,7 @@ void CallVoidVoidCFunc(lua_State* L, const std::string& fName, float number)
 }
 
 // LuaFRandomNum function: Return a random number from a Lua function, specifying a range.
-float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max)
+float LuaFRandomNum(lua_State* L, const string& fName, float min, float max)
 {
     lua_getglobal(L, fName.c_str()); // Access the Lua function by name
 
@@ -71,7 +71,7 @@ float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max
 }
 
 // LuaFLerpNum function: Interpolate between two values using a Lua function.
-float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, float t)
+float LuaFLerpNum(lua_State* L, const string& fName, float a, float b, float t)
 {
     lua_getglobal(L, fName.c_str()); // Access the Lua function by name
 
@@ -150,7 +150,7 @@ int LuaGetInt(lua_State* L, const string& name)
 }
 
 // LuaGetNum function: Return a float from a Lua script based on a variable name.
-float LuaGetNum(lua_State* L, const std::string& name)
+float LuaGetNum(lua_State* L, const string& name)
 {
     lua_getglobal(L, name.c_str()); // Retrieve Lua variable by name
 
@@ -189,5 +189,38 @@ Vector2 LuaGetVec2(lua_State* L, const string& name)
     int y = (int)lua_tointeger(L, -1);
     lua_pop(L, 1); // Clean up 'y' component
 
-    return DirectX::SimpleMath::Vector2((float)x, (float)y); // Return the constructed Vector2
+    return Vector2((float)x, (float)y); // Return the constructed Vector2
+}
+
+// Static member initialization: Stores all registered commands accessible by function name.
+std::map<std::string, Dispatcher::Command> Dispatcher::library;
+
+// LuaCall function: Called from Lua to dispatch the request to the corresponding C++ function.
+int Dispatcher::LuaCall(lua_State* L)
+{
+    // Retrieve the function name from the first argument passed from Lua.
+    std::string fName = lua_tostring(L, 1);
+
+    // Find the command in the library map using the function name.
+    std::map<std::string, Command>::iterator it = library.find(fName);
+    // Ensure the function is registered before proceeding.
+    assert(it != library.end());
+
+    // Reference to the command associated with the function name.
+    Command& cmd = (*it).second;
+
+    // Check if the function pointer is valid before calling.
+    if (cmd.voidintfunc)
+    {
+        // Retrieve the integer parameter from Lua stack to pass to the C++ function.
+        int param = lua_tointeger(L, 2);
+        // Call the registered function with the parameter.
+        cmd.voidintfunc(param);
+        // Pop the parameter off the Lua stack after use.
+        lua_pop(L, 1);
+    }
+    else
+        assert(false);  // Assert failure if the function pointer is not valid.
+
+    return 1;  // Return success status to Lua.
 }

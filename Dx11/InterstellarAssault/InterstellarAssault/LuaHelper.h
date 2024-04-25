@@ -22,6 +22,7 @@ extern "C"
 // LuaOK function: Checks Lua stack operation results and handles errors.
 bool LuaOK(lua_State* L, int id);
 
+
 // ******FUNCTIONS******
 
 // CallVoidVoidCFunc function: Calls a Lua function by name with no parameters or return values.
@@ -44,6 +45,7 @@ int LuaAdjustMusicVol(lua_State* L);
 // LuaAdjustGameVol function: Allows a Lua function to adjust the game volume across the game.
 int LuaAdjustGameVol(lua_State* L);
 
+
 // ******VARIABLES*******
 
 // LuaGetInt function: Returns an integer from a Lua script based on the variable name.
@@ -57,3 +59,40 @@ std::string LuaGetStr(lua_State* L, const std::string& name);
 
 // LuaGetVec2 function: Returns a DirectX::SimpleMath::Vector2 from a Lua script based on the variable name.
 DirectX::SimpleMath::Vector2 LuaGetVec2(lua_State* L, const std::string& name);
+
+
+// ***DISPATCHER CLASS***
+// Dispatcher class: Acts as an intermediary between C++ and Lua, allowing 
+// the registration of C++ class member functions for use in Lua scripts.
+class Dispatcher
+{
+public:
+    // Command struct: Holds a function that takes an int and returns void.
+    struct Command
+    {
+        typedef std::function<void(int)> voidintfunc;  // Type definition for a function taking an int.
+        voidintfunc voidintfunc;  // Instance of the void(int) function.
+    };
+
+    // Init function: Initializes the Dispatcher by registering it with Lua.
+    void Init(lua_State* L)
+    {
+        // Registers 'CDispatcher' as a callable function from Lua scripts.
+        lua_register(L, "CDispatcher", LuaCall);
+    }
+
+    // Register function: Registers game functions with a given name to the Dispatcher.
+    void Register(const std::string& fName, Command cmd)
+    {
+        // Ensures the function is not already registered.
+        assert(library.find(fName) == library.end());
+        // Stores the command in the library map under the given function name.
+        library[fName] = cmd;
+    }
+
+    // LuaCall function: Called from Lua to dispatch the request to the corresponding C++ function.
+    static int LuaCall(lua_State* L);
+
+private:
+    static std::map<std::string, Command> library;  // Map storing registered functions by name.
+};
