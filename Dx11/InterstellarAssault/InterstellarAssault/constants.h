@@ -55,8 +55,8 @@ namespace GC {
 	const static int ENEMY_UFO_CHANCE = 5;  // Chance of a ufo spawning (from 0-100) everytime the enemies move down
 
 	// Constant variables used for enemy behavior and positioning
-	const static int ENEMY_DOWNSTEP = 15;     // Vertical step for enemies after reaching a boundary
-	const static int ENEMY_LIMIT_OFFSET = 25;  // Offset from screen edges for enemy movement
+	//const static int ENEMY_DOWNSTEP = 15;     // Vertical step for enemies after reaching a boundary
+	//const static int ENEMY_LIMIT_OFFSET = 25;  // Offset from screen edges for enemy movement
 
 	// Enemy positioning and scoring values
 	const static int ENEMIES_PER_ROW = 11;   // Number of enemies per row

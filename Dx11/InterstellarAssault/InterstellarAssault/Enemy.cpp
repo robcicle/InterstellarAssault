@@ -188,8 +188,10 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 	mUfoDirection = -1;
 	mUfoEnemy->mActive = false;
 
-	mLeftLimit = (float)GC::ENEMY_LIMIT_OFFSET; // Set the left movement limit
-	mRightLimit = screenWidth - (float)GC::ENEMY_LIMIT_OFFSET; // Set the right movement limit
+	//mLeftLimit = (float)GC::ENEMY_LIMIT_OFFSET; // Set the left movement limit
+	mLeftLimit = (float)LuaGetInt(Game::Get().GetLuaState(), "enemyLimitOffset"); // Set the left movement limit
+	//mRightLimit = screenWidth - (float)GC::ENEMY_LIMIT_OFFSET; // Set the right movement limit
+	mRightLimit = screenWidth - (float)LuaGetInt(Game::Get().GetLuaState(), "enemyLimitOffset"); // Set the right movement limit
 
 	mDirection = 1; // Start moving to the left
 }
@@ -291,11 +293,14 @@ void EnemyManager::Update(float dTime)
 			if ((mDirection == 1 && mEnemies[i]->mSpr.mPos.x > mRightLimit) ||
 				(mDirection == -1 && mEnemies[i]->mSpr.mPos.x < mLeftLimit))
 			{
+				float enemyDownstep = (float)LuaGetInt(Game::Get().GetLuaState(), "enemyDownstep");
+
 				// Move all active enemies down and reverse direction
 				for (Enemy* e : mEnemies)
 				{
 					if (e->mActive)
-						e->mSpr.mPos.y += GC::ENEMY_DOWNSTEP;
+						//e->mSpr.mPos.y += GC::ENEMY_DOWNSTEP;
+						e->mSpr.mPos.y += enemyDownstep;
 				}
 
 				// Because we're moving down, lets get a random number and 
