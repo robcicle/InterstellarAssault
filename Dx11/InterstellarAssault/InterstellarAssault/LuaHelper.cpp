@@ -1,4 +1,5 @@
 #include "LuaHelper.h"
+#include "Game.h"
 
 #include <assert.h>
 #include <iostream>
@@ -101,6 +102,62 @@ float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, floa
     lua_pop(L, 1);
 
     return returnedVariable;
+}
+
+int LuaUpdateMusicVol(lua_State* L)
+{
+    // Retrieve our newVolume from the function
+    float newVolume = (float)lua_tonumber(L, 1);
+    
+    // Call the function to update our Music volume and
+    // pass along our new volume from the Lua function.
+    Game::Get().UpdateMusicVolume(newVolume);
+
+    // Pop off the newVolume parameter that was passed
+    lua_pop(L, 1);
+    return 1;
+}
+
+int LuaAdjustMasterVol(lua_State* L)
+{
+    // Retrieve our newVolume from the function
+    float newVolume = (float)lua_tonumber(L, 1);
+
+    // Call the function to adjust our Master volume and
+    // pass along our new volume from the Lua function.
+    Game::Get().GetAudMgr().AdjustMasterVolume(newVolume);
+
+    // Pop off the newVolume parameter that was passed
+    lua_pop(L, 1);
+    return 1;
+}
+
+int LuaAdjustMusicVol(lua_State* L)
+{
+    // Retrieve our newVolume from the function
+    float newVolume = (float)lua_tonumber(L, 1);
+
+    // Call the function to adjust our Music volume and
+    // pass along our new volume from the Lua function.
+    Game::Get().GetAudMgr().AdjustMusicVolume(newVolume);
+
+    // Pop off the newVolume parameter that was passed
+    lua_pop(L, 1);
+    return 1;
+}
+
+int LuaAdjustGameVol(lua_State* L)
+{
+    // Retrieve our newVolume from the function
+    float newVolume = (float)lua_tonumber(L, 1);
+
+    // Call the function to adjust our Game volume and
+    // pass along our new volume from the Lua function.
+    Game::Get().GetAudMgr().AdjustGameVolume(newVolume);
+
+    // Pop off the newVolume parameter that was passed
+    lua_pop(L, 1);
+    return 1;
 }
 
 // ******VARIABLES*******

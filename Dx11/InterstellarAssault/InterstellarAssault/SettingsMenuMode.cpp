@@ -173,20 +173,24 @@ void SettingsMenuMode::AdjustMasterVolume()
 {
 	mCurrentMasterVolume = mUIMgr.GetCounterValue(0) / 10.0f;
 
-	Game::Get().GetAudMgr().AdjustMasterVolume(mCurrentMasterVolume);
+	//Game::Get().GetAudMgr().AdjustMasterVolume(mCurrentMasterVolume);
+	CallVoidVoidCFunc(Game::Get().GetLuaState(), "adjustMasterVolume", mCurrentMasterVolume);
 }
 
 void SettingsMenuMode::AdjustMusicVolume()
 {
 	mCurrentMusicVolume = mUIMgr.GetCounterValue(1) / 10.0f;
 
-	Game::Get().GetAudMgr().AdjustMusicVolume(mCurrentMusicVolume);
-	Game::Get().UpdateMusicVolume(mCurrentMusicVolume);
+	//Game::Get().GetAudMgr().AdjustMusicVolume(mCurrentMusicVolume);
+	CallVoidVoidCFunc(Game::Get().GetLuaState(), "adjustMusicVolume", mCurrentMusicVolume);
+	//Game::Get().UpdateMusicVolume(mCurrentMusicVolume);
+	CallVoidVoidCFunc(Game::Get().GetLuaState(), "updateMusicVolume", mCurrentMusicVolume);
 }
 
 void SettingsMenuMode::AdjustGameVolume()
 {
 	mCurrentGameVolume = mUIMgr.GetCounterValue(2) / 10.0f;
 
-	Game::Get().GetAudMgr().AdjustGameVolume(mCurrentGameVolume);
+	//Game::Get().GetAudMgr().AdjustGameVolume(mCurrentGameVolume);
+	CallVoidVoidCFunc(Game::Get().GetLuaState(), "adjustGameVolume", mCurrentGameVolume);
 }

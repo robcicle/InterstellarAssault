@@ -118,6 +118,9 @@
     <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="FX.cpp" />
     <ClCompile Include="Game.cpp" />
+    <None Include="GameFunctions.lua">
+      <FileType>Document</FileType>
+    </None>
     <ClCompile Include="GameObj.cpp" />
     <ClCompile Include="GameOverMode.cpp" />
     <ClCompile Include="GeometryBuilder.cpp" />

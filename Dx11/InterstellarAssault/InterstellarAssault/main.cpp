@@ -69,6 +69,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
 		assert(false);
 	if (!LuaOK(L, luaL_dofile(L, "GameVariables.lua")))
 		assert(false);
+	if (!LuaOK(L, luaL_dofile(L, "GameFunctions.lua")))
+		assert(false);
+
+	// Register functions
+	lua_register(L, "updateMusicVolume", LuaUpdateMusicVol);
+	lua_register(L, "adjustMasterVolume", LuaAdjustMasterVol);
+	lua_register(L, "adjustMusicVolume", LuaAdjustMusicVol);
+	lua_register(L, "adjustGameVolume", LuaAdjustGameVol);
 
 	new Game(L);  // Instantiate and initialize the Game object.
 

@@ -297,5 +297,8 @@
     <None Include="UtilityFunctions.lua">
       <Filter>Lua Scripts</Filter>
     </None>
+    <None Include="GameFunctions.lua">
+      <Filter>Lua Scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -35,6 +35,13 @@ float LuaFRandomNum(lua_State* L, const std::string& fName, float min, float max
 // Return a number that has gone through linear interpolation
 float LuaFLerpNum(lua_State* L, const std::string& fName, float a, float b, float t);
 
+// C functions for our Lua scripts to call to enforce that
+// their volume adjustments/updates are applied to the game.
+int LuaUpdateMusicVol(lua_State* L);
+int LuaAdjustMasterVol(lua_State* L);
+int LuaAdjustMusicVol(lua_State* L);
+int LuaAdjustGameVol(lua_State* L);
+
 // ******VARIABLES*******
 // 
 // Return an int from a Lua script
