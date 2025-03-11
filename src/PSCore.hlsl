@@ -46,7 +46,7 @@ float4 PSCore(VertexOut pin, uniform bool gUseTexture) : SV_Target
 	}
 
 	//sum intensities 
-	float4 litColor = texColor*(ambient + diffuse) + spec;
+	float4 litColor = texColor*(ambient + diffuse);
 
 	// Common to take alpha from diffuse material.
 	litColor.a = gMaterial.Diffuse.a * texColor.a;

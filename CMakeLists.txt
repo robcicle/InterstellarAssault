@@ -7,7 +7,37 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h" "data/*.lua")
-add_executable(InterstellarAssault ${SOURCES})
+file(GLOB_RECURSE HLSL_SOURCES "src/*.hlsl")
+
+add_executable(InterstellarAssault ${SOURCES} ${HLSL_SOURCES})
+
+foreach(HLSL_FILE ${HLSL_SOURCES})
+    get_filename_component(FILE_NAME ${HLSL_FILE} NAME)
+    set_source_files_properties(${HLSL_FILE} PROPERTIES
+            VS_SHADER_MODEL 4.0
+            VS_SHADER_OBJECT_FILE_NAME "$(OutDir)/data/shaders/%(Filename).cso"
+        )
+    if(FILE_NAME MATCHES "PS")
+        set_source_files_properties(${HLSL_FILE} PROPERTIES
+            VS_SHADER_TYPE Pixel
+        )
+    elseif(FILE_NAME MATCHES "VS")
+        set_source_files_properties(${HLSL_FILE} PROPERTIES
+            VS_SHADER_TYPE Vertex
+        )
+    endif()
+
+    file(READ ${HLSL_FILE} HLSL_CONTENTS)
+    if(HLSL_CONTENTS MATCHES "main")
+        set_source_files_properties(${HLSL_FILE} PROPERTIES
+            VS_SHADER_ENTRYPOINT main
+        )
+    else()
+        set_source_files_properties(${HLSL_FILE} PROPERTIES
+            HEADER_FILE_ONLY TRUE
+        )
+    endif()
+endforeach()
 
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
@@ -102,12 +132,12 @@ target_link_options(InterstellarAssault PRIVATE
     "$<$<CONFIG:Release>:/SUBSYSTEM:WINDOWS>"
 )
 
-add_custom_command(TARGET InterstellarAssault POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:InterstellarAssault>/data)
+set_target_properties(InterstellarAssault PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>"
+)
 
 add_custom_command(TARGET InterstellarAssault POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data)
+    ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:InterstellarAssault>/data)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT InterstellarAssault)
