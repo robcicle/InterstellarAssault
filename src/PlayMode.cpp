@@ -113,10 +113,6 @@ void PlayMode::Init()
 	mQuitConfirmText->CentreOriginY();
 	mQuitConfirmText->scale = 0.7f;
 	Add(mQuitConfirmText);
-	
-	// Call the Lua function "setPlayerLifes" which will call a
-	// function in the Player class and set the lifes to 10.
-	CallVoidVoidCFunc(Game::Get().GetLuaState(), "setPlayerLifes");
 }
 
 // InitBgnd function: Initializes background layers for parallax scrolling effect.
@@ -128,8 +124,8 @@ void PlayMode::InitBgnd()
 
 	// Load and set up the background textures and sprites.
 	pair<string, string> files[GC::BGND_LAYERS]{
-		{ "bgnd0", LuaGetStr(Game::Get().GetLuaState(), "bgnd2_01")},
-		{ "bgnd1", LuaGetStr(Game::Get().GetLuaState(), "bgnd2_02") }
+		{ "bgnd0", LuaHelper::LuaGetStr(Game::Get().GetLuaState(), "bgnd_01", "background_layers/background01_001.dds")},
+		{ "bgnd1", LuaHelper::LuaGetStr(Game::Get().GetLuaState(), "bgnd_02", "background_layers/background01_002.dds")}
 	};
 	int i = 0;
 	for (auto& f : files)

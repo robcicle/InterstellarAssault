@@ -32,6 +32,8 @@ FetchContent_Declare(
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)
+set(ASSIMP_BUILD_STATIC_LIB ON)
+set(BUILD_SHARED_LIBS OFF)
 FetchContent_MakeAvailable(assimp)
 target_link_libraries(InterstellarAssault PRIVATE assimp)
 
@@ -90,7 +92,10 @@ target_include_directories(InterstellarAssault PRIVATE ${lua_SOURCE_DIR})
 target_link_libraries(InterstellarAssault PRIVATE XInput.lib)
 target_link_libraries(InterstellarAssault PRIVATE d3d11 dxgi)
 
-target_link_options(InterstellarAssault PRIVATE "/SUBSYSTEM:WINDOWS")
+target_link_options(InterstellarAssault PRIVATE 
+    "$<$<CONFIG:Debug>:/SUBSYSTEM:CONSOLE>"
+    "$<$<CONFIG:Release>:/SUBSYSTEM:WINDOWS>"
+)
 
 add_custom_command(TARGET InterstellarAssault POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

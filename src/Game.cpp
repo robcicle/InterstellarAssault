@@ -98,6 +98,8 @@ void Game::Load()
     warehouseMesh.CreateFrom("data/models/warehouse.fbx", WinUtil::Get().GetD3D());
     Setup(mModels[Modelid::WAREHOUSE], warehouseMesh, 0.00025f, Vector3(0, 0, 0), Vector3(0, PI / 2, PI / 2));
     mLoadData.mLoadedSoFar++;
+
+    LuaHelper::CallVoidVoidCFunc(mpLuaState, "start");
 }
 
 // Release function: Cleans up resources like sprite batch, font, and mode manager.
@@ -127,6 +129,9 @@ void Game::Update(float dTime)
     // Update input, audio, and mode manager components.
     mGamepad.Update(dTime);
     mAudMgr.Update();
+
+    LuaHelper::CallVoidVoidCFunc(mpLuaState, "update", dTime);
+
     mMMgr.Update(dTime);
 
 #if defined(DEBUG) || defined(_DEBUG)
@@ -277,7 +282,7 @@ void Game::LoadData::Render(float dTime, SpriteBatch& batch)
     // Calculate the current fill amount for the loading bar based on the number of loaded models.
     // This interpolates the fill amount smoothly for a more visually pleasing loading bar.
     // Uses a Lua UtilityFunctions.lua script
-    mCurrentFillAmt = LuaFLerpNum(Game::Get().GetLuaState(), "lerpNumber", mCurrentFillAmt, mMaxFillAmt * ((float)mLoadedSoFar / (float)mTotalToLoad), dTime * 3);
+    mCurrentFillAmt = LuaHelper::LuaFLerpNum(Game::Get().GetLuaState(), "lerpNumber", mCurrentFillAmt, mMaxFillAmt * ((float)mLoadedSoFar / (float)mTotalToLoad), dTime * 3);
 
     // Update the texture rectangle for the loading fill to reflect the current progress.
     mLoadFill.SetTexRect({ mLoadFillRect.left, mLoadFillRect.top, mCurrentFillAmt, mLoadFillRect.bottom });

@@ -11,7 +11,7 @@ using namespace DirectX::SimpleMath;
 
 
 // LuaOK function: Check Lua stack operation results and print any errors.
-bool LuaOK(lua_State* L, int id)
+bool LuaHelper::LuaOK(lua_State* L, int id)
 {
     if (id != LUA_OK)
     {
@@ -24,7 +24,7 @@ bool LuaOK(lua_State* L, int id)
 // ******FUNCTIONS******
 
 // CallVoidVoidCFunc function: Call a Lua function by name with no parameters or return values.
-void CallVoidVoidCFunc(lua_State* L, const string& fName)
+void LuaHelper::CallVoidVoidCFunc(lua_State* L, const string& fName)
 {
     lua_getglobal(L, fName.c_str()); // Retrieve the function from the Lua global scope
 
@@ -36,7 +36,7 @@ void CallVoidVoidCFunc(lua_State* L, const string& fName)
 }
 
 // CallVoidVoidCFunc function: Call a Lua function by name, passing a single float parameter.
-void CallVoidVoidCFunc(lua_State* L, const string& fName, float number)
+void LuaHelper::CallVoidVoidCFunc(lua_State* L, const string& fName, float number)
 {
     lua_getglobal(L, fName.c_str()); // Retrieve the function from Lua global scope
 
@@ -50,7 +50,7 @@ void CallVoidVoidCFunc(lua_State* L, const string& fName, float number)
 }
 
 // LuaFRandomNum function: Return a random number from a Lua function, specifying a range.
-float LuaFRandomNum(lua_State* L, const string& fName, float min, float max)
+float LuaHelper::LuaFRandomNum(lua_State* L, const string& fName, float min, float max)
 {
     lua_getglobal(L, fName.c_str()); // Access the Lua function by name
 
@@ -71,7 +71,7 @@ float LuaFRandomNum(lua_State* L, const string& fName, float min, float max)
 }
 
 // LuaFLerpNum function: Interpolate between two values using a Lua function.
-float LuaFLerpNum(lua_State* L, const string& fName, float a, float b, float t)
+float LuaHelper::LuaFLerpNum(lua_State* L, const string& fName, float a, float b, float t)
 {
     lua_getglobal(L, fName.c_str()); // Access the Lua function by name
 
@@ -92,8 +92,32 @@ float LuaFLerpNum(lua_State* L, const string& fName, float a, float b, float t)
     return returnedVariable; // Return the interpolated result
 }
 
+int LuaHelper::CustomPrint(lua_State* L)
+{
+    int n = lua_gettop(L);  // Number of arguments
+    std::cout << "[Lua]: ";
+    for (int i = 1; i <= n; ++i)
+    {
+        if (lua_isstring(L, i))
+        {
+            std::cout << lua_tostring(L, i);
+        }
+        else
+        {
+            std::cout << luaL_tolstring(L, i, nullptr);
+            lua_pop(L, 1);  // Remove the result of luaL_tolstring
+        }
+        if (i < n)
+        {
+            std::cout << "\t";
+        }
+    }
+    std::cout << std::endl;
+    return 0;
+}
+
 // LuaUpdateMusicVol function: Update the game music volume based on a value provided by a Lua script.
-int LuaUpdateMusicVol(lua_State* L)
+int LuaHelper::LuaUpdateMusicVol(lua_State* L)
 {
     float newVolume = (float)lua_tonumber(L, 1); // Retrieve new volume level from Lua stack
 
@@ -104,7 +128,7 @@ int LuaUpdateMusicVol(lua_State* L)
 }
 
 // LuaAdjustMasterVol function: Adjust the master volume across the game based on a Lua function call.
-int LuaAdjustMasterVol(lua_State* L)
+int LuaHelper::LuaAdjustMasterVol(lua_State* L)
 {
     float newVolume = (float)lua_tonumber(L, 1); // Retrieve the new volume level from Lua
 
@@ -115,7 +139,7 @@ int LuaAdjustMasterVol(lua_State* L)
 }
 
 // LuaAdjustMusicVol function: Adjust the music volume across the game based on a Lua function call.
-int LuaAdjustMusicVol(lua_State* L)
+int LuaHelper::LuaAdjustMusicVol(lua_State* L)
 {
     float newVolume = (float)lua_tonumber(L, 1); // Retrieve the new volume level from Lua
 
@@ -126,7 +150,7 @@ int LuaAdjustMusicVol(lua_State* L)
 }
 
 // LuaAdjustGameVol function: Adjust the game volume across the game based on a Lua function call.
-int LuaAdjustGameVol(lua_State* L)
+int LuaHelper::LuaAdjustGameVol(lua_State* L)
 {
     float newVolume = (float)lua_tonumber(L, 1); // Retrieve the new volume level from Lua
 
@@ -139,40 +163,46 @@ int LuaAdjustGameVol(lua_State* L)
 // ******VARIABLES*******
 
 // LuaGetInt function: Return an int from a Lua script based on a variable name.
-int LuaGetInt(lua_State* L, const string& name)
+int LuaHelper::LuaGetInt(lua_State* L, const string& name, const int& default)
 {
     lua_getglobal(L, name.c_str()); // Retrieve Lua variable by name
 
     if (!lua_isinteger(L, -1))
-        assert(false); // Assert if not an integer
+    {
+        return default;
+    }
 
     return (int)lua_tointeger(L, -1); // Return the retrieved integer
 }
 
 // LuaGetNum function: Return a float from a Lua script based on a variable name.
-float LuaGetNum(lua_State* L, const string& name)
+float LuaHelper::LuaGetNum(lua_State* L, const string& name, const float& default)
 {
     lua_getglobal(L, name.c_str()); // Retrieve Lua variable by name
 
     if (!lua_isnumber(L, -1))
-        assert(false); // Assert if not a number
+    {
+        return default;
+    }
 
     return (float)lua_tonumber(L, -1); // Return the retrieved number
 }
 
 // LuaGetStr function: Return a string from a Lua script based on a variable name.
-string LuaGetStr(lua_State* L, const string& name)
+string LuaHelper::LuaGetStr(lua_State* L, const string& name, const string& default)
 {
     lua_getglobal(L, name.c_str()); // Retrieve Lua variable by name
 
     if (!lua_isstring(L, -1))
-        assert(false); // Assert if not a string
+    {
+        return default;
+    }
 
     return lua_tostring(L, -1); // Return the retrieved string
 }
 
 // LuaGetVec2 function: Return a vector from a Lua script based on a variable name.
-Vector2 LuaGetVec2(lua_State* L, const string& name)
+Vector2 LuaHelper::LuaGetVec2(lua_State* L, const string& name)
 {
     lua_getglobal(L, name.c_str()); // Retrieve Lua variable by name as a table
 

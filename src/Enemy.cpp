@@ -104,7 +104,7 @@ void Enemy::Update(float dTime)
 		return;
 
 	// Generate a random number between 0 and 100
-	int random = (int)floor(LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 100));
+	int random = (int)floor(LuaHelper::LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 100));
 
 	if (random >= GC::ENEMY_SHOOT_CHANCE)
 	{
@@ -141,9 +141,9 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 	// Calculate positions and dimensions for enemy arrangement
 	int screenWidth = WinUtil::Get().GetClientWidth();
 	//float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)GC::ROWX_SPACING; // Width of an enemy sprite + our horizontal spacing
-	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)LuaGetInt(Game::Get().GetLuaState(), "rowXSpacing"); // Width of an enemy sprite + our horizontal spacing
+	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "rowXSpacing", GC::ROWX_SPACING); // Width of an enemy sprite + our horizontal spacing
 	//float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
-	float totalRowWidth = (float)LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow") * enemyWidth;
+	float totalRowWidth = (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow", GC::ENEMIES_PER_ROW) * enemyWidth;
 	float initialX = (screenWidth - totalRowWidth) / 2; // Center the row of enemies
 
 	// Now we're done using the octopusData so lets delete it
@@ -154,10 +154,10 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 	// Create and position enemies based on rows and columns
 
 	// Grab our variables from the Lua script.
-	int numOfRows = LuaGetInt(Game::Get().GetLuaState(), "numOfRows");
-	int enemiesPerRow = LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow");
-	int rowYSpacing = LuaGetInt(Game::Get().GetLuaState(), "rowYSpacing");
-	int enemyInitialY = LuaGetInt(Game::Get().GetLuaState(), "enemyInitialY");
+	int numOfRows = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "numOfRows", GC::NUM_ROWS);
+	int enemiesPerRow = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow", GC::ENEMIES_PER_ROW);
+	int rowYSpacing = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "rowYSpacing", GC::ROWY_SPACING);
+	int enemyInitialY = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemyInitialY", GC::ENEMY_INITIAL_Y);
 
 	//for (int row = 0; row < GC::NUM_ROWS; row++)
 	for (int row = 0; row < numOfRows; row++)
@@ -184,14 +184,14 @@ EnemyManager::EnemyManager(MyD3D& d3d)
 	// Finally create the ufo enemy
 	mUfoEnemy = new Enemy(Enemy::EnemyType::UFO);
 	//mUfoEnemy->SetPosition(Vector2(0, (float)GC::UFO_INITIAL_Y));
-	mUfoEnemy->SetPosition(Vector2(0, (float)LuaGetInt(Game::Get().GetLuaState(), "ufoInitialY")));
+	mUfoEnemy->SetPosition(Vector2(0, (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "ufoInitialY", GC::UFO_INITIAL_Y)));
 	mUfoDirection = -1;
 	mUfoEnemy->mActive = false;
 
 	//mLeftLimit = (float)GC::ENEMY_LIMIT_OFFSET; // Set the left movement limit
-	mLeftLimit = (float)LuaGetInt(Game::Get().GetLuaState(), "enemyLimitOffset"); // Set the left movement limit
+	mLeftLimit = (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemyLimitOffset", GC::ENEMY_LIMIT_OFFSET); // Set the left movement limit
 	//mRightLimit = screenWidth - (float)GC::ENEMY_LIMIT_OFFSET; // Set the right movement limit
-	mRightLimit = screenWidth - (float)LuaGetInt(Game::Get().GetLuaState(), "enemyLimitOffset"); // Set the right movement limit
+	mRightLimit = screenWidth - (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemyLimitOffset", GC::ENEMY_LIMIT_OFFSET); // Set the right movement limit
 
 	mDirection = 1; // Start moving to the left
 }
@@ -225,18 +225,18 @@ void EnemyManager::Init()
 	// Calculate positions and dimensions for enemy arrangement
 	int screenWidth = WinUtil::Get().GetClientWidth();
 	//float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)GC::ROWX_SPACING; // Width of an enemy sprite + our horizontal spacing
-	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)LuaGetInt(Game::Get().GetLuaState(), "rowXSpacing"); // Width of an enemy sprite + our horizontal spacing	//float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
-	float totalRowWidth = (float)LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow") * enemyWidth;
+	float enemyWidth = (octopusData->mSpr.GetTexData().dim.x * octopusData->mSpr.GetScale().x) + (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "rowXSpacing", GC::ROWX_SPACING); // Width of an enemy sprite + our horizontal spacing	//float totalRowWidth = (float)GC::ENEMIES_PER_ROW * enemyWidth;
+	float totalRowWidth = (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow", GC::ENEMIES_PER_ROW) * enemyWidth;
 	float initialX = (screenWidth - totalRowWidth) / 2; // Center the row of enemies
 
 	// Now we're done using the octopusData so lets delete it
 	delete octopusData;
 
 	// Create and position enemies based on rows and columns
-	int numOfRows = LuaGetInt(Game::Get().GetLuaState(), "numOfRows");
-	int enemiesPerRow = LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow");
-	int rowYSpacing = LuaGetInt(Game::Get().GetLuaState(), "rowYSpacing");
-	int enemyInitialY = LuaGetInt(Game::Get().GetLuaState(), "enemyInitialY");
+	int numOfRows = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "numOfRows", GC::NUM_ROWS);
+	int enemiesPerRow = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemiesPerRow", GC::ENEMIES_PER_ROW);
+	int rowYSpacing = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "rowYSpacing", GC::ROWY_SPACING);
+	int enemyInitialY = LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemyInitialY", GC::ENEMY_INITIAL_Y);
 
 	//for (int row = 0; row < GC::NUM_ROWS; row++)
 	for (int row = 0; row < numOfRows; row++)
@@ -293,7 +293,7 @@ void EnemyManager::Update(float dTime)
 			if ((mDirection == 1 && mEnemies[i]->mSpr.mPos.x > mRightLimit) ||
 				(mDirection == -1 && mEnemies[i]->mSpr.mPos.x < mLeftLimit))
 			{
-				float enemyDownstep = (float)LuaGetInt(Game::Get().GetLuaState(), "enemyDownstep");
+				float enemyDownstep = (float)LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "enemyDownstep", GC::ENEMY_DOWNSTEP);
 
 				// Move all active enemies down and reverse direction
 				for (Enemy* e : mEnemies)
@@ -305,7 +305,7 @@ void EnemyManager::Update(float dTime)
 
 				// Because we're moving down, lets get a random number and 
 				// see if it's with our chance of getting the random ufo
-				int random = (int)floor(LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 100));
+				int random = (int)floor(LuaHelper::LuaFRandomNum(Game::Get().GetLuaState(), "randomNumber", 0, 100));
 
 				if (!mUfoEnemy->mActive && random <= GC::ENEMY_UFO_CHANCE || mUfoActive)
 				{

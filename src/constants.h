@@ -55,16 +55,16 @@ namespace GC {
 	const static int ENEMY_UFO_CHANCE = 5;  // Chance of a ufo spawning (from 0-100) everytime the enemies move down
 
 	// Constant variables used for enemy behavior and positioning
-	//const static int ENEMY_DOWNSTEP = 15;     // Vertical step for enemies after reaching a boundary
-	//const static int ENEMY_LIMIT_OFFSET = 25;  // Offset from screen edges for enemy movement
+	const static int ENEMY_DOWNSTEP = 15;     // Vertical step for enemies after reaching a boundary
+	const static int ENEMY_LIMIT_OFFSET = 25;  // Offset from screen edges for enemy movement
 
 	// Enemy positioning and scoring values
 	const static int ENEMIES_PER_ROW = 11;   // Number of enemies per row
-	//const static int NUM_ROWS = 5;           // Total number of rows of enemies
-	//const static int ROWX_SPACING = 10;      // Horizontal spacing between rows
-	//const static int ROWY_SPACING = 50;      // Vertical spacing between rows
-	//const static int ENEMY_INITIAL_Y = 120;  // Initial Y position for the top row
-	//const static int UFO_INITIAL_Y = 50;     // Initial Y position for the ufo
+	const static int NUM_ROWS = 5;           // Total number of rows of enemies
+	const static int ROWX_SPACING = 10;      // Horizontal spacing between rows
+	const static int ROWY_SPACING = 50;      // Vertical spacing between rows
+	const static int ENEMY_INITIAL_Y = 120;  // Initial Y position for the top row
+	const static int UFO_INITIAL_Y = 50;     // Initial Y position for the ufo
 
 	// Score Constants
 	const std::string SCORE_FILE_PATH = "data/scores.dat";             // Path to the score file.

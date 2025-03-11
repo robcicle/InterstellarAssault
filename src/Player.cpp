@@ -13,10 +13,7 @@ Player::Player(MyD3D& d3d)
 	Init();
 }
 
-Player::~Player()
-{
-	Game::Get().GetDispatcher().Unregister("setLifes");
-}
+Player::~Player() {}
 
 // Initialize or reset the player's state and position
 void Player::Init()
@@ -24,7 +21,7 @@ void Player::Init()
 	MyD3D& d3d = WinUtil::Get().GetD3D();
 	// Load and orient the ship sprite
 	ID3D11ShaderResourceView* p = d3d.GetTexCache().LoadTexture(&d3d.GetDevice(), 
-		LuaGetStr(Game::Get().GetLuaState(), "playerSprite"));
+		LuaHelper::LuaGetStr(Game::Get().GetLuaState(), "playerSprite", "sprites/ship.dds"));
 	mSpr.SetTex(*p);
 	mSpr.SetScale(Vector2(0.1f, 0.1f));
 	mSpr.origin = mSpr.GetTexData().dim / 2.0f;
@@ -42,8 +39,7 @@ void Player::Init()
 	// Set the initial fire timer for missile shooting
 	mFireTimer = GetClock() + GC::FIRE_DELAY;
 
-	Dispatcher::Command::voidintfunc f{ [this](int lifes) {return SetLifes(lifes);  } };
-	Game::Get().GetDispatcher().Register("setLifes", Dispatcher::Command{ f });
+	SetLifes(LuaHelper::LuaGetInt(Game::Get().GetLuaState(), "playerLifes", mLifes));
 }
 
 // Update function: Handle the logic behind the player's movement, shooting, health, etc.

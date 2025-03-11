@@ -36,9 +36,31 @@ LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return WinUtil::DefaultMssgHandler(hwnd, msg, wParam, lParam);
 }
 
-// WinMain function: Entry point of the application.
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
-	_In_ PSTR cmdLine, _In_ int showCmd)
+// Function to load and parse Lua scripts from a directory
+void LoadLuaScripts(lua_State* L, const std::string& directory)
+{
+	WIN32_FIND_DATA findFileData;
+	HANDLE hFind = FindFirstFile((directory + "\\*.lua").c_str(), &findFileData);
+
+	if (hFind == INVALID_HANDLE_VALUE)
+	{
+		return; // No Lua scripts found
+	}
+
+	do
+	{
+		std::string filePath = directory + "\\" + findFileData.cFileName;
+		if (!LuaHelper::LuaOK(L, luaL_dofile(L, filePath.c_str())))
+		{
+			assert(false); // Assert if Lua script loading fails
+		}
+	} while (FindNextFile(hFind, &findFileData) != 0);
+
+	FindClose(hFind);
+}
+
+void EntryPoint(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
+	PSTR cmdLine, _In_ int showCmd)
 {
 	// Initialize window dimensions.
 	int w(1024), h(768);
@@ -65,18 +87,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
 	luaL_openlibs(L);  // Open main libraries for scripts
 
 	// Load and parse Lua scripts
-	if (!LuaOK(L, luaL_dofile(L, "data/scripts/UtilityFunctions.lua")))
-		assert(false);
-	if (!LuaOK(L, luaL_dofile(L, "data/scripts/GameVariables.lua")))
-		assert(false);
-	if (!LuaOK(L, luaL_dofile(L, "data/scripts/GameFunctions.lua")))
-		assert(false);
+	LoadLuaScripts(L, "data/scripts");
 
 	// Register functions
-	lua_register(L, "updateMusicVolume", LuaUpdateMusicVol);
-	lua_register(L, "adjustMasterVolume", LuaAdjustMasterVol);
-	lua_register(L, "adjustMusicVolume", LuaAdjustMusicVol);
-	lua_register(L, "adjustGameVolume", LuaAdjustGameVol);
+	lua_pushcfunction(L, LuaHelper::CustomPrint);
+	lua_setglobal(L, "print");
 
 	Dispatcher D;
 	D.Init(L);
@@ -104,6 +119,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
 
 	// Close our Lua
 	lua_close(L);
-
-	return 0;
 }
+
+#ifdef _DEBUG
+int main(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
+	_In_ PSTR cmdLine, _In_ int showCmd)
+{
+	EntryPoint(hInstance, prevInstance, cmdLine, showCmd);
+}
+#else
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE prevInstance,
+	_In_ PSTR cmdLine, _In_ int showCmd)
+{
+	EntryPoint(hInstance, prevInstance, cmdLine, showCmd);
+}
+#endif
