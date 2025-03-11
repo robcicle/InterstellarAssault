@@ -13,6 +13,8 @@ set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 include(FetchContent)
 
+set(BUILD_SHARED_LIBS OFF)
+
 # DirectXTK
 FetchContent_Declare(
     DirectXTK
@@ -32,8 +34,11 @@ FetchContent_Declare(
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)
-set(ASSIMP_BUILD_STATIC_LIB ON)
-set(BUILD_SHARED_LIBS OFF)
+set(ASSIMP_BUILD_STATIC_LIB ON CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_NO_EXPORT ON CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(assimp)
 target_link_libraries(InterstellarAssault PRIVATE assimp)
 
