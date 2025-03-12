@@ -37,27 +37,20 @@ Also upgraded to use CMake.
     cd InterstellarAssault
     ```
 
-2. Create a build directory and navigate to it:
+2. Run CMake to create and configure the project:
 
     ```sh
-    mkdir build
-    cd build
-    ```
-
-3. Run CMake to configure the project:
-
-    ```sh
-    cmake ..
+    cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
     ```
 
 4. Build the project:
 
     ```sh
-    cmake --build .
+    cmake --build build --config Release
     ```
 
 5. Run the executable:
 
     ```sh
-    ./bin/Debug/InterstellarAssault.exe
+    ./build/bin/Release/InterstellarAssault.exe
     ```
