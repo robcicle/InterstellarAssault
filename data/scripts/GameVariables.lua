@@ -5,9 +5,9 @@ playerSprite = "sprites/ship2.dds"
 playerLifes = 5
 
 -- bgnd_01 variable: Defines the path to the first image of the background's layers.
-bgnd_01 = "background_layers/background02_001.dds"
+bgnd_01 = "background_layers/background01_001.dds"
 -- bgnd_02 variable: Defines the path to the second image of the background's layers.
-bgnd_02 = "background_layers/background02_002.dds"
+bgnd_02 = "background_layers/background01_002.dds"
 
 -- Enemies configuration variables:
 -- enemiesPerRow: Specifies the number of enemies in each row.

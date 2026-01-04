@@ -17,13 +17,13 @@ Shelter::Shelter(MyD3D& d3d)
 
 	// Set up the shelter sprite
 	mSpr.SetTex(*p);
-	mSpr.SetScale(Vector2(0.15f, 0.15f));
+	mSpr.SetScale(Vector2(0.20f, 0.20f));
 	mSpr.origin = Vector2((mSpr.GetTexData().dim.x / (float)mTextureStates) / 2.0f, mSpr.GetTexData().dim.y / 2.0f);
 	RECTF shelterRect = mSpr.GetTexRect();
 	// The sprite sheet isn't an equal amount so over time the pixels
 	// from the next sprite seem to leak over, subtracting the 1 seems
 	// to fix this issue
-	mShelterRectRightAmt = (shelterRect.right / (float)mTextureStates) - 1;
+	mShelterRectRightAmt = (shelterRect.right / (float)mTextureStates);
 	shelterRect.right = mShelterRectRightAmt;
 
 	// Pixel seems to be wrapping from the top and left 

@@ -78,23 +78,23 @@ void PlayMode::Init()
 	Add(eM);
 	
 	// initialize the UI Text
-	SpriteFont* retrotechSF = d3d.GetFontCache().LoadFont(&d3d.GetDevice(), "retrotech.spritefont");
+	SpriteFont* lRetrotechSF = d3d.GetFontCache().LoadFont(&d3d.GetDevice(), "retrotech-60.spritefont");
 	
 	mScoreText = new Text(d3d);
-	mScoreText->SetFont(*retrotechSF);
+	mScoreText->SetFont(*lRetrotechSF);
 	mScoreText->mPos = Vector2((float)w / 2.0f, (float)(h % 10));
-	mScoreText->colour = Colors::Black;
+	mScoreText->colour = Colors::White;
 	mScoreText->mActive = true;
+	mScoreText->scale = .3f;
 	Add(mScoreText);
 
 	mLifesText = new Text(d3d);
-	mLifesText->SetFont(*retrotechSF);
+	mLifesText->SetFont(*lRetrotechSF);
 	mLifesText->mPos = Vector2((float)(w % 10), (float)(h % 10));
-	mLifesText->colour = Colors::Black;
+	mLifesText->colour = Colors::White;
 	mLifesText->mActive = true;
+	mLifesText->scale = .3f;
 	Add(mLifesText);
-
-	SpriteFont* lRetrotechSF = d3d.GetFontCache().LoadFont(&d3d.GetDevice(), "retrotech-60.spritefont");
 
 	mGameOverText = new Text(d3d);
 	mGameOverText->SetFont(*lRetrotechSF);
